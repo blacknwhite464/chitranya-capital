@@ -4,12 +4,14 @@ import { z } from "zod";
 import { getDb } from "@/lib/server/db";
 import { createSession } from "@/lib/server/session";
 import { allowAuthAttempt } from "@/lib/server/auth-rate-limit";
+import { isSameOriginRequest } from "@/lib/server/request-security";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const schema = z.object({ email: z.string().trim().email().max(254), password: z.string().min(1).max(128) });
 
 export async function POST(request: NextRequest) {
+  if (!isSameOriginRequest(request)) return NextResponse.json({ error: "Cross-origin request rejected." }, { status: 403 });
   try {
     const parsed = schema.safeParse(await request.json());
     if (!parsed.success) return NextResponse.json({ error: "Enter a valid email and password." }, { status: 400 });
