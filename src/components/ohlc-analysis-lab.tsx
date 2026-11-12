@@ -74,15 +74,15 @@ export default function OHLCAnalysisLab() {
     const columns = ["Date","Open","High","Low","Close","Volume","SMA20","EMA12","RSI14","MACD","MACD Signal"];
     const quote = (item: string | number | null | undefined) => {
       const raw = item == null ? "" : String(item);
-      return /[",\\r\\n]/.test(raw) ? `"${raw.replace(/"/g, '""')}"` : raw;
+      return /[",\r\n]/.test(raw) ? `"${raw.replace(/"/g, '""')}"` : raw;
     };
     const csv = [columns, ...rows.map(row => [row.time,row.open,row.high,row.low,row.close,row.volume ?? "",row.sma20,row.ema20,row.rsi,row.macd,row.signal])]
-      .map(row => row.map(quote).join(",")).join("\\r\\n");
-    const blob = new Blob(["\\uFEFF",csv], {type:"text/csv;charset=utf-8"});
+      .map(row => row.map(quote).join(",")).join("\r\n");
+    const blob = new Blob(["\uFEFF",csv], {type:"text/csv;charset=utf-8"});
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = (fileName.replace(/\\.csv$/i,"") || "ohlc-analysis") + "-indicators.csv";
+    link.download = (fileName.replace(/\.csv$/i,"") || "ohlc-analysis") + "-indicators.csv";
     link.click();
     URL.revokeObjectURL(url);
   };
