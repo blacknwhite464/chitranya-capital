@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { getDb } from "@/lib/server/db";
 import { createSession } from "@/lib/server/session";
+import { allowAuthAttempt } from "@/lib/server/auth-rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,6 +19,7 @@ export async function POST(request: NextRequest) {
     if (!parsed.success) return NextResponse.json({ error: "Enter a valid name, email and a password of at least 12 characters." }, { status: 400 });
     const { name, password } = parsed.data;
     const email = parsed.data.email.toLowerCase();
+    if (!(await allowAuthAttempt("register", email, 5))) return NextResponse.json({ error: "Too many account creation attempts. Try again in 15 minutes." }, { status: 429 });
     const passwordHash = await bcrypt.hash(password, 12);
     const result = await getDb().query(
       "INSERT INTO users (email, display_name, password_hash) VALUES ($1,$2,$3) RETURNING id,email,display_name,role",
