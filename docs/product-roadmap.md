@@ -12,7 +12,7 @@
 - [x] Wire a browser-local chronological trade ledger into the portfolio interface with buy/sell validation, weighted-average cost and realized P/L
 - [ ] Expand learning center into complete lessons and glossary
 - [ ] Add dedicated methodology, privacy and risk-disclosure pages
-- [ ] Add import/export and recovery for browser-local portfolio/watchlist data
+- [x] Add validated JSON import/export and recovery for browser-local portfolio/watchlist data
 - [ ] Authentication and multi-device account lifecycle
 - [ ] Complete stock discovery interface backed by a verified security master
 - [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)\n- [ ] Wire verified OHLC history into interactive stock charts and signal views
