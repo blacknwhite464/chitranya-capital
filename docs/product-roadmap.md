@@ -26,6 +26,8 @@
 - [x] Add a browser-local bilingual AI research question notebook with templates, save/load/delete and JSON export
 - [x] Add browser-native English and Nepali voice dictation for research questions (subject to browser support and permissions)
 - [x] Add a browser-local portfolio corporate-action ledger for manually confirmed cash dividends, bonus shares and rights shares, with edit/delete and CSV export
+- [x] Extend portfolio backup to schema version 2 with corporate-action records while retaining version 1 restore compatibility
+- [x] Add browser-local reusable stock screener presets with validated criteria, load/delete and explicit no-live-data state
 - [ ] Implement model-backed retrieval, source ingestion and cited response generation
 
 ## After MDP onboarding
