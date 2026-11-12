@@ -24,7 +24,7 @@ const action = z.object({
   kind:z.enum(["cash_dividend","bonus_share","rights_share"]),actionDate:date,
   cashReceived:z.number().finite().nonnegative(),sharesCredited:z.number().finite().nonnegative(),
   note:z.string().max(500).default(""),sourceUrl:z.string().max(2048).refine(v=>!v||/^https:\/\/\//i.test(v))
-});
+}).refine(v=>v.cashReceived>0||v.sharesCredited>0);
 const preset = z.object({
   id:z.string().min(1).max(80),name:z.string().trim().min(1).max(50),
   createdAt:z.string().datetime(),values:z.record(z.string(),z.string().max(80))
@@ -34,7 +34,12 @@ const stateSchema = z.object({
   trades:z.array(trade).max(10000),
   corporateActions:z.array(action).max(10000),
   screenerPresets:z.array(preset).max(30)
-}).strict();
+}).strict().superRefine((value,ctx)=>{
+  const symbols=new Set<string>();
+  for(const item of value.watchlist){const key=item.symbol.toUpperCase();if(symbols.has(key))ctx.addIssue({code:"custom",message:"Duplicate watchlist symbol.",path:["watchlist"]});symbols.add(key);}
+  const names=new Set<string>();
+  for(const item of value.screenerPresets){const key=item.name.toLowerCase();if(names.has(key))ctx.addIssue({code:"custom",message:"Duplicate screener preset name.",path:["screenerPresets"]});names.add(key);}
+});
 
 export async function GET() {
   try {
