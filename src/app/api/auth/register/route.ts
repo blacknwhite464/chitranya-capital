@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getDb } from "@/lib/server/db";
 import { createSession } from "@/lib/server/session";
 import { allowAuthAttempt } from "@/lib/server/auth-rate-limit";
+import { isSameOriginRequest } from "@/lib/server/request-security";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,6 +15,7 @@ const schema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  if (!isSameOriginRequest(request)) return NextResponse.json({ error: "Cross-origin request rejected." }, { status: 403 });
   try {
     const parsed = schema.safeParse(await request.json());
     if (!parsed.success) return NextResponse.json({ error: "Enter a valid name, email and a password of at least 12 characters." }, { status: 400 });
