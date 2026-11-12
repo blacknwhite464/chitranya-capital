@@ -193,3 +193,10 @@ CREATE TABLE IF NOT EXISTS source_payload_archive (
 );
 CREATE INDEX IF NOT EXISTS source_payload_module_time_idx
   ON source_payload_archive (provider, data_module, received_at DESC);
+
+CREATE TABLE IF NOT EXISTS auth_rate_limits (
+  action_key CHAR(64) PRIMARY KEY,
+  window_started TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  attempt_count INTEGER NOT NULL DEFAULT 0 CHECK (attempt_count >= 0)
+);
+CREATE INDEX IF NOT EXISTS auth_rate_limits_window_idx ON auth_rate_limits (window_started);
