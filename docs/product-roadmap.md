@@ -21,7 +21,9 @@
 - [x] Add a position-sizing calculator using user-entered capital, risk budget, entry and stop-loss assumptions
 - [x] Add an offline stock screener for user-imported CSV stock universes with numeric filters, sector/search filters and filtered CSV export and a downloadable header template, source label and as-of date
 - [x] Export calculated open portfolio positions to CSV with share quantity, weighted-average cost, invested cost and realized P/L
-- [ ] Authentication and multi-device account lifecycle
+- [x] Add website customer registration, sign-in, sign-out and current-session APIs using PostgreSQL, bcrypt password hashes, HttpOnly sessions and database-backed email throttling
+- [x] Add responsive website customer account page and navigation link
+- [ ] Complete account lifecycle: email verification, password reset, deletion, admin MFA and multi-device session management
 - [ ] Complete stock discovery interface backed by a verified security master
 - [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)
 - [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)
