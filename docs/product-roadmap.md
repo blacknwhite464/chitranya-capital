@@ -16,6 +16,7 @@
 - [x] Add validated JSON import/export and recovery for browser-local portfolio/watchlist data
 - [x] Export portfolio transaction history as a spreadsheet-compatible CSV
 - [x] Add portfolio transaction-history filtering by stock symbol, transaction date and buy/sell side
+- [x] Add browser-local portfolio allocation and concentration insights based on recorded invested cost, with explicit non-market-value labeling
 - [x] Export calculated open portfolio positions to CSV with share quantity, weighted-average cost, invested cost and realized P/L
 - [ ] Authentication and multi-device account lifecycle
 - [ ] Complete stock discovery interface backed by a verified security master
