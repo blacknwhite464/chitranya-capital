@@ -25,6 +25,7 @@
 - [x] Define typed AI research contract and evidence-reference/risk validation gate
 - [x] Add a browser-local bilingual AI research question notebook with templates, save/load/delete and JSON export
 - [x] Add browser-native English and Nepali voice dictation for research questions (subject to browser support and permissions)
+- [x] Add a browser-local portfolio corporate-action ledger for manually confirmed cash dividends, bonus shares and rights shares, with edit/delete and CSV export
 - [ ] Implement model-backed retrieval, source ingestion and cited response generation
 
 ## After MDP onboarding
