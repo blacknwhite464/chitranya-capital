@@ -14,6 +14,7 @@
 - [x] Expand learning center into eight bilingual NEPSE investing lessons and searchable glossary
 - [x] Add dedicated methodology, privacy and risk-disclosure pages
 - [x] Add validated JSON import/export and recovery for browser-local portfolio/watchlist data
+- [x] Export portfolio transaction history as a spreadsheet-compatible CSV
 - [ ] Authentication and multi-device account lifecycle
 - [ ] Complete stock discovery interface backed by a verified security master
 - [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)
