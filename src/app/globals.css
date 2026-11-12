@@ -140,3 +140,12 @@
 .research-note time{font-size:9px;color:var(--muted);display:block;margin-top:5px}
 .research-notebook-empty{font-size:11px;line-height:1.6;color:var(--muted);margin:0;padding:14px;border:1px dashed var(--line);border-radius:7px}
 @media(max-width:640px){.research-note{flex-wrap:wrap}.research-note>div{flex-basis:calc(100% - 32px)}.research-note .secondary-button{margin-left:auto}.research-notes-heading{align-items:flex-start;flex-direction:column}}
+
+
+.research-voice-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.research-voice-row>div{display:flex;align-items:center;gap:7px}
+.research-voice-row select{border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:7px 9px;font-size:10px}
+.voice-button{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#40505b;padding:8px 11px;font-size:10px}
+.voice-button>span{font-size:9px;color:#16a36a}
+.voice-button.listening{border-color:#e05252;color:#b33f3f;background:#fff8f7}
+.voice-button.listening>span{color:#e05252}
