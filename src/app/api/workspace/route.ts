@@ -8,7 +8,7 @@ import { isSameOriginRequest } from "@/lib/server/request-security";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const date = z.string().regex(/^\\d{4}-\\d{2}-\\d{2}$/);
+const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const watchItem = z.object({symbol:z.string().trim().min(1).max(24),note:z.string().max(300).default("")});
 const trade = z.object({
   id:z.string().min(1).max(80),
@@ -23,7 +23,7 @@ const action = z.object({
   id:z.string().min(1).max(80),symbol:z.string().trim().min(1).max(24),
   kind:z.enum(["cash_dividend","bonus_share","rights_share"]),actionDate:date,
   cashReceived:z.number().finite().nonnegative(),sharesCredited:z.number().finite().nonnegative(),
-  note:z.string().max(500).default(""),sourceUrl:z.string().max(2048).refine(v=>!v||/^https:\\/\\//i.test(v))
+  note:z.string().max(500).default(""),sourceUrl:z.string().max(2048).refine(v=>!v||/^https:\/\/\//i.test(v))
 });
 const preset = z.object({
   id:z.string().min(1).max(80),name:z.string().trim().min(1).max(50),
