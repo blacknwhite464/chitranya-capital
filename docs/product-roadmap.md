@@ -19,6 +19,7 @@
 - [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)
 - [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)\n- [x] Export locally calculated OHLC indicators to a separate CSV for offline review
 - [x] Define typed AI research contract and evidence-reference/risk validation gate
+- [x] Add a browser-local bilingual AI research question notebook with templates, save/load/delete and JSON export
 - [ ] Implement model-backed retrieval, source ingestion and cited response generation
 
 ## After MDP onboarding
