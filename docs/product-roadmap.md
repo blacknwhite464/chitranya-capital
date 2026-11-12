@@ -15,7 +15,7 @@
 - [x] Add validated JSON import/export and recovery for browser-local portfolio/watchlist data
 - [ ] Authentication and multi-device account lifecycle
 - [ ] Complete stock discovery interface backed by a verified security master
-- [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)\n- [x] Add browser-local OHLC CSV analysis with close/SMA/EMA chart and RSI readout (user-supplied data only; no live-feed claims)
+- [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)\n- [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)
 - [ ] AI research contract, retrieval, citations and risk controls
 
 ## After MDP onboarding
