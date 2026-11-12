@@ -23,7 +23,8 @@
 - [x] Export calculated open portfolio positions to CSV with share quantity, weighted-average cost, invested cost and realized P/L
 - [x] Add website customer registration, sign-in, sign-out and current-session APIs using PostgreSQL, bcrypt password hashes, HttpOnly sessions and database-backed email throttling
 - [x] Add responsive website customer account page and navigation link
-- [ ] Complete account lifecycle: email verification, password reset, deletion, admin MFA and multi-device session management
+- [x] Add explicit authenticated cloud backup/restore for customer watchlists, trades, corporate-action records and screener presets with server validation
+- [ ] Complete account lifecycle: email verification, password reset, deletion, admin MFA and automatic multi-device session management
 - [ ] Complete stock discovery interface backed by a verified security master
 - [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)
 - [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)
