@@ -21,6 +21,7 @@
 - [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)
 - [x] Export locally calculated OHLC indicators to a separate CSV for offline review
 - [x] Show ATR 14, MACD and Bollinger Band levels in the uploaded-data analysis summary
+- [x] Add Bollinger Band overlays and an optional uploaded-volume chart to the local OHLC workspace
 - [x] Define typed AI research contract and evidence-reference/risk validation gate
 - [x] Add a browser-local bilingual AI research question notebook with templates, save/load/delete and JSON export
 - [x] Add browser-native English and Nepali voice dictation for research questions (subject to browser support and permissions)
