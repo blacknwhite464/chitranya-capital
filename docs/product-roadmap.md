@@ -18,6 +18,7 @@
 - [x] Add portfolio transaction-history filtering by stock symbol, transaction date and buy/sell side
 - [x] Add browser-local portfolio allocation and concentration insights based on recorded invested cost, with explicit non-market-value labeling
 - [x] Add a position-sizing calculator using user-entered capital, risk budget, entry and stop-loss assumptions
+- [x] Add an offline stock screener for user-imported CSV stock universes with numeric filters, sector/search filters and filtered CSV export
 - [x] Export calculated open portfolio positions to CSV with share quantity, weighted-average cost, invested cost and realized P/L
 - [ ] Authentication and multi-device account lifecycle
 - [ ] Complete stock discovery interface backed by a verified security master
