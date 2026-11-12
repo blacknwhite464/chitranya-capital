@@ -14,7 +14,7 @@ CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio work
 - **Stock screener:** reusable saved criteria plus a local CSV screener for user-supplied stock-universe data, with sector/search/numeric filters and filtered CSV export.
 - **Broker intelligence:** floorsheet analytics workspace awaiting licensed floorsheet data.
 - **Customer accounts:** responsive website sign-in/registration page and server-side PostgreSQL account APIs with bcrypt password hashing, opaque HttpOnly sessions and database-backed attempt throttling.
-- **Administrator website:** protected operations dashboard for customer, security-master, market-history, floorsheet, financial-report, announcement and synchronization counts.
+- **Administrator website:** protected operations dashboard plus customer account directory, search, customer suspension and reactivation (administrator accounts are protected).
 - **Website discoverability:** search/social metadata, crawler rules and a configurable sitemap. Email verification, recovery and production database setup remain required.
 - **Portfolio:** buy/sell ledger, weighted-average cost, realized P/L, open-position export, transaction CSV, watchlist, corporate-action ledger, allocation/concentration insights, local backup/restore, and validated account cloud backup/restore for signed-in customers.
 - **IPO and corporate actions:** source-ready workspace and manually recorded portfolio dividend/bonus/rights events.
