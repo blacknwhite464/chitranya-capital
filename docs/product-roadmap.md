@@ -5,6 +5,7 @@
 - [x] Honest unavailable-data states and server-side market API boundary
 - [x] MDP environment template and provider adapter contract
 - [x] Domain contracts and PostgreSQL schema draft
+- [x] Extend PostgreSQL schema for indices, brokers, floorsheet, financial reports, announcements, user preferences, portfolio events and AI research provenance
 - [x] Browser-local watchlist management
 - [x] Manual portfolio holdings and invested-cost tracking
 - [x] Weighted-average portfolio trade calculation engine (buy/sell fees and realized P/L)
