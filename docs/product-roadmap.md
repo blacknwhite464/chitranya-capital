@@ -15,7 +15,7 @@
 - [ ] Add import/export and recovery for browser-local portfolio/watchlist data
 - [ ] Authentication and multi-device account lifecycle
 - [ ] Complete stock discovery interface backed by a verified security master
-- [ ] Stock research chart shell and technical indicator calculations
+- [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)\n- [ ] Wire verified OHLC history into interactive stock charts and signal views
 - [ ] AI research contract, retrieval, citations and risk controls
 
 ## After MDP onboarding
