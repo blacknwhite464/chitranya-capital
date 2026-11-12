@@ -23,6 +23,10 @@ Run `docs/database-schema.sql` against the production PostgreSQL database using 
 
 Session tokens are random, stored only as SHA-256 hashes in PostgreSQL and sent as HttpOnly, SameSite=Lax cookies. Cookies are Secure in production. Sessions expire after 14 days. Passwords are hashed with bcrypt (12 rounds). Login attempts are throttled per normalized email to 10 attempts per 15-minute window; registration is throttled to 5 attempts per email per 15-minute window. The application should also be protected by a trusted edge/WAF rate limit keyed by client IP.
 
+## Customer workspace cloud backup
+
+Signed-in customers can explicitly save and restore their watchlist, trade ledger, corporate-action ledger and saved screener presets through the authenticated `/api/workspace` endpoint. Data is validated server-side, stored per user in PostgreSQL and limited to 5 MB per request. Restore replaces the matching browser-local lists after an explicit confirmation. This does not sync automatically and does not include uploaded CSV files.
+
 ## Production hardening still required before public launch
 
 - Put the application behind a managed WAF/reverse proxy with per-IP and per-account rate limits for registration and login.
