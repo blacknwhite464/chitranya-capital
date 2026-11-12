@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { getDb } from "@/lib/server/db";
 import { createSession } from "@/lib/server/session";
+import { allowAuthAttempt } from "@/lib/server/auth-rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,12 +14,13 @@ export async function POST(request: NextRequest) {
     const parsed = schema.safeParse(await request.json());
     if (!parsed.success) return NextResponse.json({ error: "Enter a valid email and password." }, { status: 400 });
     const email = parsed.data.email.toLowerCase();
+    if (!(await allowAuthAttempt("login", email, 10))) return NextResponse.json({ error: "Too many sign-in attempts. Try again in 15 minutes." }, { status: 429 });
     const result = await getDb().query(
       "SELECT id,email,display_name,role,password_hash FROM users WHERE email=$1 AND disabled_at IS NULL LIMIT 1",
       [email]
     );
     const user = result.rows[0];
-    const valid = user ? await bcrypt.compare(parsed.data.password, user.password_hash) : false;
+    const valid = user?.password_hash ? await bcrypt.compare(parsed.data.password, user.password_hash) : false;
     if (!valid) return NextResponse.json({ error: "Email or password is incorrect." }, { status: 401 });
     await createSession(user.id);
     return NextResponse.json({ user: { id: user.id, email: user.email, display_name: user.display_name, role: user.role } });
