@@ -57,7 +57,7 @@ export async function PUT(request:NextRequest) {
     const user=await getSessionUser();
     if(!user)return NextResponse.json({error:"Sign in to save account data."},{status:401});
     const raw=await request.text();
-    if(raw.length>5*1024*1024)return NextResponse.json({error:"Workspace backup exceeds the 5 MB limit."},{status:413});
+    if(new TextEncoder().encode(raw).byteLength>5*1024*1024)return NextResponse.json({error:"Workspace backup exceeds the 5 MB limit."},{status:413});
     let body:unknown;
     try{body=JSON.parse(raw);}catch{return NextResponse.json({error:"Invalid JSON workspace data."},{status:400});}
     const parsed=stateSchema.safeParse(body);
