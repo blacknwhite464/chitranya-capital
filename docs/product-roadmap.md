@@ -23,6 +23,7 @@
 - [x] Export calculated open portfolio positions to CSV with share quantity, weighted-average cost, invested cost and realized P/L
 - [x] Add website customer registration, sign-in, sign-out and current-session APIs using PostgreSQL, bcrypt password hashes, HttpOnly sessions and database-backed email throttling
 - [x] Add responsive website customer account page and navigation link
+- [x] Build protected administrator customer directory with account search, suspend/re-enable controls and session revocation for suspended customers
 - [x] Add explicit authenticated cloud backup/restore for customer watchlists, trades, corporate-action records and screener presets with server validation
 - [ ] Complete account lifecycle: email verification, password reset, deletion, admin MFA and automatic multi-device session management
 - [ ] Complete stock discovery interface backed by a verified security master
