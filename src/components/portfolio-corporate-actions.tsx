@@ -20,7 +20,7 @@ export default function PortfolioCorporateActions(){
   const [sourceUrl,setSourceUrl]=useState("");
   const [editingId,setEditingId]=useState<string|null>(null);
   const [message,setMessage]=useState("");
-  useEffect(()=>{try{const saved=localStorage.getItem(STORAGE_KEY);if(saved){const parsed=JSON.parse(saved);if(Array.isArray(parsed))setRecords(parsed);}}catch{setMessage("Saved corporate-action records could not be read.");}},[]);
+  useEffect(()=>{const load=()=>{try{const saved=localStorage.getItem(STORAGE_KEY);if(saved){const parsed=JSON.parse(saved);if(Array.isArray(parsed))setRecords(parsed);else setMessage("Saved corporate-action records could not be read.");}else setRecords([]);}catch{setMessage("Saved corporate-action records could not be read.");}};load();window.addEventListener("cc-corporate-actions-updated",load);return()=>window.removeEventListener("cc-corporate-actions-updated",load);},[]);
   const totals=useMemo(()=>records.reduce((acc,item)=>({cash:acc.cash+item.cashReceived,shares:acc.shares+item.sharesCredited,count:acc.count+1}),{cash:0,shares:0,count:0}),[records]);
   const persist=(next:ActionRecord[])=>{setRecords(next);localStorage.setItem(STORAGE_KEY,JSON.stringify(next));};
   const reset=()=>{setSymbol("");setKind("cash_dividend");setActionDate(new Date().toISOString().slice(0,10));setCashReceived("0");setSharesCredited("0");setNote("");setSourceUrl("");setEditingId(null);};
