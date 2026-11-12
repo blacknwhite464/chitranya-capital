@@ -13,6 +13,7 @@ CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio work
 - **AI research workspace:** bilingual English/Nepali research notebook, prompt templates, saved questions and browser voice dictation. Model-backed answers are not connected yet.
 - **Stock screener:** reusable saved criteria plus a local CSV screener for user-supplied stock-universe data, with sector/search/numeric filters and filtered CSV export.
 - **Broker intelligence:** floorsheet analytics workspace awaiting licensed floorsheet data.
+- **Customer accounts:** responsive website sign-in/registration page and server-side PostgreSQL account APIs with bcrypt password hashing, opaque HttpOnly sessions and database-backed attempt throttling. Email verification, recovery and production database setup remain required.
 - **Portfolio:** browser-local buy/sell ledger, weighted-average cost, realized P/L, open-position export, transaction CSV, watchlist, corporate-action ledger, allocation/concentration insights, backup/restore and position-risk calculator.
 - **IPO and corporate actions:** source-ready workspace and manually recorded portfolio dividend/bonus/rights events.
 - **Financial tools:** SIP, lump-sum and position-sizing calculators.
@@ -74,6 +75,10 @@ MARKET_DATA_MODE=unconfigured
 Never add provider secrets to `NEXT_PUBLIC_*` variables or commit credentials. The Source Code MDP adapter must be implemented only after receiving the subscribed production endpoint paths, request/response schemas, sample payloads and written permissions for display, storage, derived analytics and AI use. Do not scrape or redistribute data without authorization.
 
 See `docs/market-data-onboarding.md`, `docs/data-import-formats.md` and `docs/product-roadmap.md`.
+
+## Website-only scope
+
+CHITRANYA CAPITAL is being developed as a responsive website. There is no separate native mobile-app deliverable in this project.
 
 ## Planned production milestones
 
