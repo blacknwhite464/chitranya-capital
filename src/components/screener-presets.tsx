@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { BookmarkPlus, Trash2 } from "lucide-react";
 
 type Criterion = { label: string; options: string[] };
-type Preset = { id: string; name: string; values: Record<string,string>; createdAt: string };
+type Preset = ScreenerPreset;
 
 const STORAGE_KEY = "cc-screener-presets-v1";
 const criteria: Criterion[] = [
@@ -20,6 +20,31 @@ const criteria: Criterion[] = [
   { label: "Dividend yield", options: ["0%", "Above 0%–3%", "3%–6%", "Above 6%"] },
 ];
 
+export type ScreenerPreset = { id: string; name: string; values: Record<string,string>; createdAt: string };
+export function validateScreenerPresets(value: unknown): ScreenerPreset[] {
+  if (!Array.isArray(value) || value.length > 30) throw new Error("Invalid saved screener presets.");
+  const seenIds = new Set<string>();
+  const seenNames = new Set<string>();
+  return value.map((item: unknown) => {
+    if (!item || typeof item !== "object") throw new Error("Invalid saved screener preset.");
+    const preset = item as Record<string, unknown>;
+    if (typeof preset.id !== "string" || !preset.id || seenIds.has(preset.id) ||
+        typeof preset.name !== "string" || !preset.name.trim() || preset.name.length > 50 ||
+        seenNames.has(preset.name.trim().toLowerCase()) ||
+        typeof preset.createdAt !== "string" || Number.isNaN(Date.parse(preset.createdAt)) ||
+        !preset.values || typeof preset.values !== "object" || Array.isArray(preset.values)) {
+      throw new Error("Invalid saved screener preset.");
+    }
+    const values = preset.values as Record<string, unknown>;
+    if (Object.entries(values).some(([key, selected]) =>
+      !criteria.some(criterion => criterion.label === key && (selected === "" || (typeof selected === "string" && criterion.options.includes(selected))))
+    )) throw new Error("Invalid screening criteria in backup.");
+    seenIds.add(preset.id);
+    seenNames.add(preset.name.trim().toLowerCase());
+    return { id: preset.id, name: preset.name.trim(), createdAt: preset.createdAt, values: Object.fromEntries(criteria.map(criterion => [criterion.label, typeof values[criterion.label] === "string" ? values[criterion.label] as string : ""])) };
+  });
+}
+
 const emptyValues = () => Object.fromEntries(criteria.map(item => [item.label, ""])) as Record<string,string>;
 
 export default function ScreenerPresets() {
@@ -28,16 +53,16 @@ export default function ScreenerPresets() {
   const [presets, setPresets] = useState<Preset[]>([]);
   const [message, setMessage] = useState("");
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const parsed: unknown = JSON.parse(raw);
-      if (Array.isArray(parsed)) setPresets(parsed.filter((item): item is Preset =>
-        !!item && typeof item.id === "string" && typeof item.name === "string" &&
-        typeof item.createdAt === "string" && !!item.values && typeof item.values === "object" &&
-        Object.entries(item.values).every(([key,value]) => criteria.some(c => c.label === key) && typeof value === "string" && (value === "" || criteria.find(c => c.label === key)?.options.includes(value)))
-      ).slice(0, 30));
-    } catch { setMessage("Saved screening presets could not be read."); }
+    const load = () => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) { setPresets([]); return; }
+        setPresets(validateScreenerPresets(JSON.parse(raw)));
+      } catch { setMessage("Saved screening presets could not be read."); }
+    };
+    load();
+    window.addEventListener("cc-screener-presets-updated", load);
+    return () => window.removeEventListener("cc-screener-presets-updated", load);
   }, []);
   const persist = (next: Preset[]) => {
     try {
