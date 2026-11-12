@@ -13,40 +13,40 @@ export type MarketSnapshot = {
   message: string;
 };
 
+const emptySnapshot = (provider: string, message: string): MarketSnapshot => ({
+  provider,
+  status: "unavailable",
+  asOf: null,
+  index: null,
+  change: null,
+  changePercent: null,
+  turnoverNpr: null,
+  advances: null,
+  declines: null,
+  unchanged: null,
+  message
+});
+
 export async function getMarketSnapshot(): Promise<MarketSnapshot> {
   const provider = process.env.MARKET_DATA_PROVIDER;
-  const baseUrl = process.env.MARKET_DATA_BASE_URL;
-  const apiKey = process.env.MARKET_DATA_API_KEY;
+  const baseUrl = process.env.MDP_API_BASE_URL;
+  const apiKey = process.env.MDP_API_KEY;
+  const apiSecret = process.env.MDP_API_SECRET;
+  const accessId = process.env.MDP_ACCESS_ID;
+  const apiVersion = process.env.MDP_API_VERSION || "1.0";
 
-  if (!provider || !baseUrl || !apiKey) {
-    return {
-      provider: "Not connected",
-      status: "unavailable",
-      asOf: null,
-      index: null,
-      change: null,
-      changePercent: null,
-      turnoverNpr: null,
-      advances: null,
-      declines: null,
-      unchanged: null,
-      message: "Connect an authorized NEPSE market-data provider to display verified market figures."
-    };
+  if (!provider || !baseUrl || !apiKey || !apiSecret || !accessId) {
+    return emptySnapshot(
+      "Source Code MDP — not connected",
+      "The authorized MDP production endpoint and API credentials are not configured yet. No market figures are being invented."
+    );
   }
 
-  // Provider-specific adapters will be implemented after the selected vendor's API
-  // documentation and credentials are supplied. Never guess endpoints or fabricate quotes.
-  return {
-    provider,
-    status: "unavailable",
-    asOf: null,
-    index: null,
-    change: null,
-    changePercent: null,
-    turnoverNpr: null,
-    advances: null,
-    declines: null,
-    unchanged: null,
-    message: "Provider credentials are configured, but its verified API adapter is not implemented yet."
-  };
+  // The public MDP documentation confirms the authentication headers, but the
+  // vendor must provide the production endpoint and subscribed endpoint schemas.
+  // Implement the response adapter only against those confirmed specifications.
+  return emptySnapshot(
+    "Source Code MDP — credentials configured",
+    `MDP configuration detected (API version ${apiVersion}), but the verified production endpoint adapter is awaiting the vendor's subscribed API specification.`
+  );
 }
