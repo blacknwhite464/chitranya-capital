@@ -8,7 +8,7 @@ import PortfolioInsights from "@/components/portfolio-insights";
 import PositionRiskCalculator from "@/components/position-risk-calculator";
 import ScreenerPresets, { validateScreenerPresets } from "@/components/screener-presets";
 import OfflineStockScreener from "@/components/offline-stock-screener";
-import { Activity, ArrowDownRight, ArrowUpRight, Bell, BookOpen, BrainCircuit, BriefcaseBusiness, Calculator, ChartCandlestick, ChevronDown, CircleHelp, Clock3, Command, Compass, Download, FileText, Filter, LayoutDashboard, Menu, Newspaper, Search, Settings2, ShieldCheck, Sparkles, Wallet, X, Plus, Trash2, Pencil, TrendingUp, PieChart, Building2, SlidersHorizontal, Upload } from "lucide-react";
+import { Activity, ArrowDownRight, ArrowUpRight, Bell, BookOpen, BrainCircuit, BriefcaseBusiness, Calculator, ChartCandlestick, ChevronDown, CircleHelp, Clock3, Command, Compass, Download, FileText, Filter, LayoutDashboard, Menu, Newspaper, Search, Settings2, ShieldCheck, Sparkles, Wallet, X, Plus, Trash2, Pencil, TrendingUp, PieChart, Building2, SlidersHorizontal, Upload, CircleUserRound } from "lucide-react";
 
 type Snapshot = { provider:string; status:"live"|"delayed"|"end_of_day"|"unavailable"; asOf:string|null; index:number|null; change:number|null; changePercent:number|null; turnoverNpr:number|null; advances:number|null; declines:number|null; unchanged:number|null; message:string };
 type Holding = { symbol:string; quantity:number; averageCost:number };
