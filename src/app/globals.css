@@ -117,3 +117,26 @@
 .ohlc-levels>div{display:flex;justify-content:space-between;gap:7px;padding:7px 8px;background:#f8f9f8;border-radius:5px;font-size:9px}
 .ohlc-levels>div span{color:#87929a}.ohlc-levels>div b{color:#354651;font-weight:600;font-variant-numeric:tabular-nums}
 @media(max-width:650px){.ohlc-level-grid{grid-template-columns:1fr}}
+
+
+.research-notebook{display:flex;flex-direction:column;gap:12px;margin-top:16px;min-width:0}
+.research-template-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.research-template-row>span{font-size:10px;color:var(--muted);font-weight:600;margin-right:3px}
+.research-template-row .secondary-button{font-size:10px}
+.research-notebook textarea{width:100%;min-height:112px;resize:vertical;border:1px solid var(--line);border-radius:7px;padding:12px;font:inherit;font-size:12px;line-height:1.6;color:var(--ink);background:#fff;outline:none}
+.research-notebook textarea:focus{border-color:#bca66e;box-shadow:0 0 0 2px #d8bd7c22}
+.research-notebook-actions{display:flex;gap:7px;flex-wrap:wrap}
+.research-notebook-actions button,.research-notes-heading button,.research-note button{font-size:10px}
+.research-notebook-message{font-size:10px;color:#54765f;margin:0}
+.research-notes-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:14px}
+.research-notes-heading>div{display:flex;flex-direction:column;gap:4px}
+.research-notes-heading strong{font-size:12px;color:var(--ink)}
+.research-notes-heading span{font-size:10px;color:var(--muted)}
+.research-note-list{display:flex;flex-direction:column;gap:7px}
+.research-note{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:7px;min-width:0}
+.research-note>svg{flex-shrink:0;color:#a58a4f}
+.research-note>div{flex:1;min-width:0}
+.research-note p{font-size:11px;line-height:1.5;color:var(--ink);margin:0;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.research-note time{font-size:9px;color:var(--muted);display:block;margin-top:5px}
+.research-notebook-empty{font-size:11px;line-height:1.6;color:var(--muted);margin:0;padding:14px;border:1px dashed var(--line);border-radius:7px}
+@media(max-width:640px){.research-note{flex-wrap:wrap}.research-note>div{flex-basis:calc(100% - 32px)}.research-note .secondary-button{margin-left:auto}.research-notes-heading{align-items:flex-start;flex-direction:column}}
