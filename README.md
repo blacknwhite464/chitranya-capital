@@ -73,7 +73,7 @@ MARKET_DATA_MODE=unconfigured
 
 Never add provider secrets to `NEXT_PUBLIC_*` variables or commit credentials. The Source Code MDP adapter must be implemented only after receiving the subscribed production endpoint paths, request/response schemas, sample payloads and written permissions for display, storage, derived analytics and AI use. Do not scrape or redistribute data without authorization.
 
-See `docs/market-data-onboarding.md` and `docs/product-roadmap.md`.
+See `docs/market-data-onboarding.md`, `docs/data-import-formats.md` and `docs/product-roadmap.md`.
 
 ## Planned production milestones
 
