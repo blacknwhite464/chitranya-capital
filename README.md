@@ -1,45 +1,90 @@
 # CHITRANYA CAPITAL
 
+**Smarter Investing. Better Decisions.**  
 AI-powered financial intelligence for Nepal's capital market.
 
-## Current status
-- Next.js App Router + TypeScript foundation
-- Premium responsive dashboard shell
-- Market API contract and server-side provider adapter boundary
-- Honest unavailable state until an authorized data provider is connected
-- No fabricated market prices or demo quotes
+CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio workspace. The website is the first product; mobile access follows after the data and account foundations are ready.
 
-## Requirements
-- Node.js 20.9+
-- npm
-- Authorized NEPSE market-data provider account and API documentation
+## Product modules
 
-## Local setup
+- **Market dashboard:** NEPSE index snapshot, turnover and breadth interface. Live values remain unavailable until an authorized market-data provider is connected.
+- **Stock research:** company discovery workspace, technical-analysis engine and user-uploaded OHLC analysis.
+- **Technical analysis:** SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci retracement and classic pivot levels.
+- **AI research workspace:** bilingual English/Nepali research notebook, prompt templates, saved questions and browser voice dictation. Model-backed answers are not connected yet.
+- **Stock screener:** reusable saved criteria plus a local CSV screener for user-supplied stock-universe data, with sector/search/numeric filters and filtered CSV export.
+- **Broker intelligence:** floorsheet analytics workspace awaiting licensed floorsheet data.
+- **Portfolio:** browser-local buy/sell ledger, weighted-average cost, realized P/L, open-position export, transaction CSV, watchlist, corporate-action ledger, allocation/concentration insights, backup/restore and position-risk calculator.
+- **IPO and corporate actions:** source-ready workspace and manually recorded portfolio dividend/bonus/rights events.
+- **Financial tools:** SIP, lump-sum and position-sizing calculators.
+- **Learning and disclosures:** eight bilingual investing lessons, glossary, methodology, privacy and risk-disclosure pages.
+
+## Data integrity and current limitations
+
+- No fabricated NEPSE prices, indices, movers, broker activity, financial ratios, IPO dates or announcements.
+- Market data is disabled until an authorized provider supplies the production endpoint specifications, credentials and permitted-use terms.
+- CSV analysis and portfolio records are processed/stored in the user's browser. They are not synced to a cloud account.
+- The AI research notebook stores questions; it does not generate AI answers until a model and evidence-retrieval service are connected.
+- Broker, floorsheet, company financials and announcement feeds require verified sources.
+- Portfolio unrealized P/L is not calculated without verified current prices.
+- User-uploaded data must be checked for its source, reporting period, units and completeness.
+
+## Technology
+
+- Next.js App Router, React and TypeScript
+- Tailwind CSS and Recharts
+- Zod for validation
+- PostgreSQL schema foundation in `docs/database-schema.sql`
+- Server-side market-provider adapter boundary
+- GitHub Actions typecheck and production build workflow
+
+## Local development
+
+Requirements: Node.js 20.9+ and npm.
+
 ```powershell
 npm install
 Copy-Item .env.example .env.local
 npm run dev
 ```
+
 Open http://localhost:3000.
 
-## Market data configuration
-Set the following server-only environment variables in `.env.local` after receiving credentials from an authorized provider:
+Run checks:
+
+```powershell
+npm run typecheck
+npm run lint
+npm run build
+```
+
+## Authorized market-data setup
+
+The server reads these environment variables:
 
 ```env
-MARKET_DATA_PROVIDER=
-MARKET_DATA_BASE_URL=
-MARKET_DATA_API_KEY=
+MARKET_DATA_PROVIDER=source-code-mdp
+MDP_API_BASE_URL=
+MDP_API_KEY=
+MDP_API_SECRET=
+MDP_ACCESS_ID=
+MDP_API_VERSION=1.0
 MARKET_DATA_MODE=unconfigured
 ```
 
-The API key must never use a `NEXT_PUBLIC_` prefix. The provider-specific adapter must be implemented against the vendor's official documentation and permitted use. Do not scrape or redistribute market data without authorization.
+Never add provider secrets to `NEXT_PUBLIC_*` variables or commit credentials. The Source Code MDP adapter must be implemented only after receiving the subscribed production endpoint paths, request/response schemas, sample payloads and written permissions for display, storage, derived analytics and AI use. Do not scrape or redistribute data without authorization.
 
-## Next milestones
-1. Select and contract an authorized data vendor.
-2. Implement and test its adapter using official API documentation.
-3. Persist licensed quotes and historical data in PostgreSQL.
-4. Add charts, screeners, fundamentals, floorsheet and corporate actions.
-5. Add AI analysis grounded in verified source data, then portfolio and user accounts.
+See `docs/market-data-onboarding.md` and `docs/product-roadmap.md`.
+
+## Planned production milestones
+
+1. Complete authorized MDP onboarding and schema-validated market-data adapter.
+2. Connect PostgreSQL through secure server-side migrations and repository services.
+3. Add user authentication, cloud portfolios, multi-device sync and account recovery.
+4. Implement verified security master, historical price storage, scheduled sync and visible source timestamps.
+5. Connect evidence retrieval and model-backed bilingual AI research with citations and risk gates.
+6. Add licensed floorsheet, company fundamentals, IPO, corporate-action and announcement ingestion.
+7. Deploy production monitoring, backups, security controls and mobile app.
 
 ## Disclaimer
-CHITRANYA CAPITAL is a research and analytics product, not a broker or investment adviser. Market data may be live, delayed or end-of-day depending on the provider's licensed service. AI output is informational and is not a guarantee of investment results.
+
+CHITRANYA CAPITAL is an informational research and analytics product, not a broker or personalized investment adviser. Investing involves risk, including loss of principal. Calculators are mathematical illustrations, not forecasts. AI analysis, when enabled, will remain subject to source quality, freshness and uncertainty.
