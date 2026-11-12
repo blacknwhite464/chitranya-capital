@@ -200,3 +200,17 @@ CREATE TABLE IF NOT EXISTS auth_rate_limits (
   attempt_count INTEGER NOT NULL DEFAULT 0 CHECK (attempt_count >= 0)
 );
 CREATE INDEX IF NOT EXISTS auth_rate_limits_window_idx ON auth_rate_limits (window_started);
+
+CREATE TABLE IF NOT EXISTS user_workspace_state (
+  user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  schema_version INTEGER NOT NULL DEFAULT 1,
+  watchlist JSONB NOT NULL DEFAULT '[]'::jsonb,
+  trades JSONB NOT NULL DEFAULT '[]'::jsonb,
+  corporate_actions JSONB NOT NULL DEFAULT '[]'::jsonb,
+  screener_presets JSONB NOT NULL DEFAULT '[]'::jsonb,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  CHECK (jsonb_typeof(watchlist) = 'array'),
+  CHECK (jsonb_typeof(trades) = 'array'),
+  CHECK (jsonb_typeof(corporate_actions) = 'array'),
+  CHECK (jsonb_typeof(screener_presets) = 'array')
+);
