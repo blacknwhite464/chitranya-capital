@@ -9,14 +9,17 @@
 - [x] Manual portfolio holdings and invested-cost tracking
 - [x] Weighted-average portfolio trade calculation engine (buy/sell fees and realized P/L)
 - [x] SIP and lump-sum calculators
-- [x] Wire a browser-local chronological trade ledger into the portfolio interface with buy/sell validation, weighted-average cost and realized P/L\n- [x] Edit and delete portfolio transactions with full-ledger validation and strict trade-date checks
+- [x] Wire a browser-local chronological trade ledger into the portfolio interface with buy/sell validation, weighted-average cost and realized P/L
+- [x] Edit and delete portfolio transactions with full-ledger validation and strict trade-date checks
 - [x] Expand learning center into eight bilingual NEPSE investing lessons and searchable glossary
 - [x] Add dedicated methodology, privacy and risk-disclosure pages
 - [x] Add validated JSON import/export and recovery for browser-local portfolio/watchlist data
 - [ ] Authentication and multi-device account lifecycle
 - [ ] Complete stock discovery interface backed by a verified security master
-- [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)\n- [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)
-- [ ] AI research contract, retrieval, citations and risk controls
+- [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)
+- [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)
+- [x] Define typed AI research contract and evidence-reference/risk validation gate
+- [ ] Implement model-backed retrieval, source ingestion and cited response generation
 
 ## After MDP onboarding
 - Confirm production base URL, subscribed endpoint paths and response schemas.
