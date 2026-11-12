@@ -8,6 +8,7 @@ import PortfolioInsights from "@/components/portfolio-insights";
 import PositionRiskCalculator from "@/components/position-risk-calculator";
 import ScreenerPresets, { validateScreenerPresets } from "@/components/screener-presets";
 import OfflineStockScreener from "@/components/offline-stock-screener";
+import AccountWorkspaceSync from "@/components/account-workspace-sync";
 import { Activity, ArrowDownRight, ArrowUpRight, Bell, BookOpen, BrainCircuit, BriefcaseBusiness, Calculator, ChartCandlestick, ChevronDown, CircleHelp, Clock3, Command, Compass, Download, FileText, Filter, LayoutDashboard, Menu, Newspaper, Search, Settings2, ShieldCheck, Sparkles, Wallet, X, Plus, Trash2, Pencil, TrendingUp, PieChart, Building2, SlidersHorizontal, Upload, CircleUserRound } from "lucide-react";
 
 type Snapshot = { provider:string; status:"live"|"delayed"|"end_of_day"|"unavailable"; asOf:string|null; index:number|null; change:number|null; changePercent:number|null; turnoverNpr:number|null; advances:number|null; declines:number|null; unchanged:number|null; message:string };
@@ -194,6 +195,7 @@ else if(active==="portfolio")body=(
       )}
     </section>
     <section className="panel wide-panel">
+      <AccountWorkspaceSync/>
       <PanelTitle title="Backup & recovery" subtitle="Export your watchlist and transaction ledger, or restore them on this browser."/>
       <div className="backup-actions">
         <button className="primary-button" onClick={exportPortfolioBackup}><Download size={14}/> Download backup</button>
