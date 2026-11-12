@@ -10,7 +10,7 @@
 - [x] Weighted-average portfolio trade calculation engine (buy/sell fees and realized P/L)
 - [x] SIP and lump-sum calculators
 - [x] Wire a browser-local chronological trade ledger into the portfolio interface with buy/sell validation, weighted-average cost and realized P/L
-- [ ] Expand learning center into complete lessons and glossary
+- [x] Expand learning center into eight bilingual NEPSE investing lessons and searchable glossary
 - [ ] Add dedicated methodology, privacy and risk-disclosure pages
 - [x] Add validated JSON import/export and recovery for browser-local portfolio/watchlist data
 - [ ] Authentication and multi-device account lifecycle
