@@ -64,3 +64,11 @@
 .search-box input{font-size:10px}
 @media(max-width:900px){.screener-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.inline-form{grid-template-columns:1fr 1fr}.inline-form button{min-height:36px}.calculator-layout{grid-template-columns:1fr}.learning-grid{grid-template-columns:1fr}}
 @media(max-width:760px){.screener-grid{grid-template-columns:1fr 1fr}.inline-form{grid-template-columns:1fr}.panel-actions{align-items:flex-start;flex-direction:column}.analyst-head .muted-chip{display:none}.tool-list{grid-template-columns:1fr}.research-filters{gap:5px}.research-filters span{font-size:8px;padding:6px}.calc-result>strong{font-size:22px}}
+
+.watchlist-box{margin-top:18px;padding:15px;background:#fbfcfc;border:1px solid var(--line);border-radius:8px}
+.watchlist-items{display:grid;gap:0}
+.watchlist-item{display:grid;grid-template-columns:1fr 1.5fr 1fr 28px;gap:10px;align-items:center;padding:11px 5px;border-top:1px solid #edf0f1;font-size:10px}
+.watchlist-item strong{color:#2c3b46}
+.watchlist-item span{color:#89949c}
+.watchlist-item em{font-style:normal;color:#a0a8ae;font-size:9px}
+@media(max-width:760px){.watchlist-item{grid-template-columns:1fr 1fr 28px}.watchlist-item em{display:none}}
