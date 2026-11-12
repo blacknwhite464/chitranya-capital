@@ -149,3 +149,7 @@
 .voice-button>span{font-size:9px;color:#16a36a}
 .voice-button.listening{border-color:#e05252;color:#b33f3f;background:#fff8f7}
 .voice-button.listening>span{color:#e05252}
+
+
+.corporate-actions-ledger{margin-top:15px}.corporate-actions-ledger>.panel-heading{gap:14px}.corporate-action-stats{grid-template-columns:repeat(3,minmax(0,1fr));margin:16px 0}.corporate-action-stats .stat-card{padding:12px 14px}.corporate-action-stats .stat-value{font-size:17px;margin-top:10px}.corporate-action-form{margin-top:8px}.corporate-source{grid-column:span 2}.corporate-action-table{margin-top:16px}.corporate-action-head,.corporate-action-row{grid-template-columns:90px 75px 115px 125px 90px minmax(130px,1fr) 65px;min-width:760px}.corporate-action-note{display:flex;flex-direction:column;gap:4px;min-width:0;overflow-wrap:anywhere}.corporate-action-note a{color:#8a7040;text-decoration:none;font-size:10px}.corporate-action-note a:hover{text-decoration:underline}
+@media(max-width:760px){.corporate-action-stats{grid-template-columns:1fr 1fr}.corporate-source{grid-column:1/-1}.corporate-actions-ledger>.panel-heading{align-items:flex-start;flex-direction:column}.corporate-action-table{overflow-x:auto}}
