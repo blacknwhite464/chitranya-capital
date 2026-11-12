@@ -66,7 +66,9 @@ export default function OHLCAnalysisLab() {
     ema12: analysis?.ema[12]?.[index]?.value ?? null,
     rsi: analysis?.rsi[index]?.value ?? null,
     macd: analysis?.macd[index]?.macd ?? null,
-    signal: analysis?.macd[index]?.signal ?? null
+    signal: analysis?.macd[index]?.signal ?? null,
+    bbUpper: analysis?.bollinger[index]?.upper ?? null,
+    bbLower: analysis?.bollinger[index]?.lower ?? null
   })), [bars, analysis]);
   const latest = rows.at(-1);
   const levels = useMemo(() => { if (bars.length < 2) return null; const high = Math.max(...bars.map(bar => bar.high)); const low = Math.min(...bars.map(bar => bar.low)); const previous = bars.at(-1)!; return { fibonacci: fibonacciRetracement(high, low), pivots: classicPivotLevels(previous.high, previous.low, previous.close) }; }, [bars]);
