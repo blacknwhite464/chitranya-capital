@@ -5,7 +5,7 @@ import { Activity, Download, FileUp, ShieldCheck, X } from "lucide-react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { calculateTechnicalAnalysis, classicPivotLevels, fibonacciRetracement, type OHLCBar } from "@/lib/technical-analysis";
 
-type ChartRow = OHLCBar & { sma20: number | null; ema20: number | null; rsi: number | null; macd: number | null; signal: number | null };
+type ChartRow = OHLCBar & { sma20: number | null; ema12: number | null; rsi: number | null; macd: number | null; signal: number | null };
 
 function parseCsv(text: string): OHLCBar[] {
   const rows = text.replace(/^\uFEFF/, "").split(/\r?\n/).filter(line => line.trim());
@@ -63,7 +63,7 @@ export default function OHLCAnalysisLab() {
   const rows: ChartRow[] = useMemo(() => bars.map((bar, index) => ({
     ...bar,
     sma20: analysis?.sma[20]?.[index]?.value ?? null,
-    ema20: analysis?.ema[12]?.[index]?.value ?? null,
+    ema12: analysis?.ema[12]?.[index]?.value ?? null,
     rsi: analysis?.rsi[index]?.value ?? null,
     macd: analysis?.macd[index]?.macd ?? null,
     signal: analysis?.macd[index]?.signal ?? null
@@ -76,7 +76,7 @@ export default function OHLCAnalysisLab() {
       const raw = item == null ? "" : String(item);
       return /[",\r\n]/.test(raw) ? `"${raw.replace(/"/g, '""')}"` : raw;
     };
-    const csv = [columns, ...rows.map(row => [row.time,row.open,row.high,row.low,row.close,row.volume ?? "",row.sma20,row.ema20,row.rsi,row.macd,row.signal])]
+    const csv = [columns, ...rows.map(row => [row.time,row.open,row.high,row.low,row.close,row.volume ?? "",row.sma20,row.ema12,row.rsi,row.macd,row.signal])]
       .map(row => row.map(quote).join(",")).join("\r\n");
     const blob = new Blob(["\uFEFF",csv], {type:"text/csv;charset=utf-8"});
     const url = URL.createObjectURL(blob);
@@ -107,8 +107,8 @@ export default function OHLCAnalysisLab() {
     {error && <p className="form-error" role="alert">{error}</p>}
     {bars.length ? <>
       <div className="ohlc-file-row"><strong>{fileName}</strong><span>{bars.length.toLocaleString()} rows · User-provided data</span><button className="secondary-button" onClick={downloadAnalysis}><Download size={14}/>Export indicators CSV</button><button className="icon-danger" onClick={() => {setBars([]);setFileName("");setError("");}} aria-label="Clear uploaded OHLC data"><X size={15}/></button></div>
-      <div className="ohlc-metrics"><div><span>Latest close</span><strong>{value(latest?.close)}</strong></div><div><span>SMA 20</span><strong>{value(latest?.sma20)}</strong></div><div><span>EMA 12</span><strong>{value(latest?.ema20)}</strong></div><div><span>RSI 14</span><strong>{value(latest?.rsi)}</strong></div></div>
-      <div className="ohlc-chart-wrap"><div className="ohlc-chart-title"><strong>Closing price & moving averages</strong><span>Values from uploaded file only</span></div><ResponsiveContainer width="100%" height={300}><LineChart data={rows} margin={{top:12,right:16,left:0,bottom:4}}><CartesianGrid strokeDasharray="3 3" vertical={false}/><XAxis dataKey="time" minTickGap={32} tick={{fontSize:11}}/><YAxis domain={["auto","auto"]} tick={{fontSize:11}} width={68}/><Tooltip formatter={(v) => value(Number(v))}/><Line type="monotone" dataKey="close" name="Close" stroke="#D8BD7C" dot={false} strokeWidth={2}/><Line type="monotone" dataKey="sma20" name="SMA 20" stroke="#16A36A" dot={false} strokeWidth={1.5} connectNulls={false}/><Line type="monotone" dataKey="ema20" name="EMA 12" stroke="#6D9FE8" dot={false} strokeWidth={1.5} connectNulls={false}/></LineChart></ResponsiveContainer></div>
+      <div className="ohlc-metrics"><div><span>Latest close</span><strong>{value(latest?.close)}</strong></div><div><span>SMA 20</span><strong>{value(latest?.sma20)}</strong></div><div><span>EMA 12</span><strong>{value(latest?.ema12)}</strong></div><div><span>RSI 14</span><strong>{value(latest?.rsi)}</strong></div><div><span>ATR 14</span><strong>{value(analysis?.atr.at(-1)?.value)}</strong></div><div><span>MACD</span><strong>{value(analysis?.macd.at(-1)?.macd)}</strong></div><div><span>BB upper</span><strong>{value(analysis?.bollinger.at(-1)?.upper)}</strong></div><div><span>BB lower</span><strong>{value(analysis?.bollinger.at(-1)?.lower)}</strong></div></div>
+      <div className="ohlc-chart-wrap"><div className="ohlc-chart-title"><strong>Closing price & moving averages</strong><span>Values from uploaded file only</span></div><ResponsiveContainer width="100%" height={300}><LineChart data={rows} margin={{top:12,right:16,left:0,bottom:4}}><CartesianGrid strokeDasharray="3 3" vertical={false}/><XAxis dataKey="time" minTickGap={32} tick={{fontSize:11}}/><YAxis domain={["auto","auto"]} tick={{fontSize:11}} width={68}/><Tooltip formatter={(v) => value(Number(v))}/><Line type="monotone" dataKey="close" name="Close" stroke="#D8BD7C" dot={false} strokeWidth={2}/><Line type="monotone" dataKey="sma20" name="SMA 20" stroke="#16A36A" dot={false} strokeWidth={1.5} connectNulls={false}/><Line type="monotone" dataKey="ema12" name="EMA 12" stroke="#6D9FE8" dot={false} strokeWidth={1.5} connectNulls={false}/></LineChart></ResponsiveContainer></div>
       <div className="ohlc-chart-wrap"><div className="ohlc-chart-title"><strong>Momentum · RSI 14</strong><span>Common reference zones: 30 / 70 · not automatic signals</span></div><ResponsiveContainer width="100%" height={170}><LineChart data={rows} margin={{top:8,right:16,left:0,bottom:4}}><CartesianGrid strokeDasharray="3 3" vertical={false}/><XAxis dataKey="time" minTickGap={32} tick={{fontSize:10}}/><YAxis domain={[0,100]} ticks={[0,30,50,70,100]} tick={{fontSize:10}} width={34}/><Tooltip formatter={(v) => value(Number(v))}/><Line type="monotone" dataKey="rsi" name="RSI 14" stroke="#A58BC8" dot={false} strokeWidth={1.7} connectNulls={false}/></LineChart></ResponsiveContainer></div>
       <div className="ohlc-chart-wrap"><div className="ohlc-chart-title"><strong>MACD 12 / 26 / 9</strong><span>MACD line and signal line</span></div><ResponsiveContainer width="100%" height={190}><LineChart data={rows} margin={{top:8,right:16,left:0,bottom:4}}><CartesianGrid strokeDasharray="3 3" vertical={false}/><XAxis dataKey="time" minTickGap={32} tick={{fontSize:10}}/><YAxis tick={{fontSize:10}} width={58}/><Tooltip formatter={(v) => value(Number(v))}/><Line type="monotone" dataKey="macd" name="MACD" stroke="#D8BD7C" dot={false} strokeWidth={1.7} connectNulls={false}/><Line type="monotone" dataKey="signal" name="Signal" stroke="#6D9FE8" dot={false} strokeWidth={1.4} connectNulls={false}/></LineChart></ResponsiveContainer></div>
       {levels && <div className="ohlc-level-grid"><section><strong>Classic pivots</strong><span>Calculated from final row in uploaded file</span><div className="ohlc-levels">{Object.entries(levels.pivots).map(([key, level])=><div key={key}><span>{key.toUpperCase()}</span><b>{value(level)}</b></div>)}</div></section><section><strong>Fibonacci retracement</strong><span>Full-file high / low range</span><div className="ohlc-levels">{Object.entries(levels.fibonacci).map(([key, level])=><div key={key}><span>{key}</span><b>{value(level)}</b></div>)}</div></section></div>}
