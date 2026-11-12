@@ -80,15 +80,15 @@ export default function ScreenerPresets() {
     persist([{ id: crypto.randomUUID(), name: clean, values: { ...values }, createdAt: new Date().toISOString() }, ...presets]);
     setName("");
   };
-  const load = (preset: Preset) => { setValues({ ...emptyValues(), ...preset.values }); setMessage("Preset loaded into the filter builder. Live screening still needs verified market data."); };
+  const load = (preset: Preset) => { setValues({ ...emptyValues(), ...preset.values }); window.dispatchEvent(new CustomEvent("cc-screener-preset-loaded",{detail:preset.values})); setMessage("Preset applied to the imported-data screener. Results use the reporting date in your CSV."); };
   const remove = (id: string) => persist(presets.filter(p => p.id !== id));
-  const clear = () => { setValues(emptyValues()); setMessage("Filter conditions cleared."); };
+  const clear = () => { const empty=emptyValues(); setValues(empty); window.dispatchEvent(new CustomEvent("cc-screener-preset-loaded",{detail:empty})); setMessage("Filter conditions cleared."); };
   return <section className="panel screener-presets">
-    <div className="panel-heading"><div><h3>Screening criteria & saved presets</h3><p>Prepare reusable filter combinations. Results remain unavailable until verified NEPSE data is connected.</p></div></div>
+    <div className="panel-heading"><div><h3>Screening criteria & saved presets</h3><p>Save filter combinations and apply them to an imported stock CSV.</p></div></div>
     <div className="screener-grid">{criteria.map(item => <label key={item.label} className="filter-field"><span>{item.label}</span><select value={values[item.label] ?? ""} onChange={event => setValues(current => ({ ...current, [item.label]: event.target.value }))}><option value="">Any</option>{item.options.map(option => <option key={option} value={option}>{option}</option>)}</select></label>)}</div>
     <div className="preset-save-row"><label className="filter-field"><span>Preset name</span><input value={name} onChange={event => setName(event.target.value)} maxLength={50} placeholder="e.g. Dividend-focused banks"/></label><div className="trade-form-actions"><button className="primary-button" onClick={save}><BookmarkPlus size={14}/> Save preset</button><button className="secondary-button" onClick={clear}>Clear filters</button></div></div>
     {message && <p className="privacy-note" role="status">{message}</p>}
     <div className="saved-presets"><div className="saved-presets-heading"><strong>Saved presets</strong><span>{presets.length} / 30</span></div>{presets.length ? presets.map(preset => <div className="saved-preset-row" key={preset.id}><div><strong>{preset.name}</strong><span>{Object.entries(preset.values).filter(([,value]) => value).map(([key,value]) => key + ": " + value).join(" · ")}</span></div><button className="secondary-button" onClick={() => load(preset)}>Load</button><button className="icon-danger" onClick={() => remove(preset.id)} aria-label={"Delete " + preset.name}><Trash2 size={14}/></button></div>) : <p className="privacy-note">No saved presets yet. Choose criteria and save a combination for later.</p>}</div>
-    <p className="privacy-note">Filter bands are user-selectable research criteria, not current market readings or recommendations. Sector and numeric ranges must be checked against the selected reporting date when data becomes available. Presets are stored in this browser only.</p>
+    <p className="privacy-note">Saved presets filter the imported file only. Results reflect the source date and definitions in that file, not live market readings or recommendations. Presets are stored in this browser only.</p>
   </section>;
 }
