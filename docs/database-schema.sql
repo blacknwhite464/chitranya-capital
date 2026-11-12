@@ -5,7 +5,29 @@ CREATE TABLE IF NOT EXISTS securities (id UUID PRIMARY KEY DEFAULT gen_random_uu
 CREATE TABLE IF NOT EXISTS market_sessions (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), session_date DATE NOT NULL UNIQUE, status VARCHAR(24) NOT NULL DEFAULT 'unknown', nepse_index NUMERIC(18,4), index_change NUMERIC(18,4), index_change_percent NUMERIC(12,6), turnover_npr NUMERIC(24,2), advances INTEGER, declines INTEGER, unchanged INTEGER, provider VARCHAR(80) NOT NULL, source_timestamp TIMESTAMPTZ, received_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
 CREATE TABLE IF NOT EXISTS price_bars (id BIGSERIAL PRIMARY KEY, security_id UUID NOT NULL REFERENCES securities(id) ON DELETE CASCADE, interval VARCHAR(12) NOT NULL, bar_time TIMESTAMPTZ NOT NULL, open NUMERIC(18,4) NOT NULL, high NUMERIC(18,4) NOT NULL, low NUMERIC(18,4) NOT NULL, close NUMERIC(18,4) NOT NULL, volume NUMERIC(24,4), turnover_npr NUMERIC(24,2), provider VARCHAR(80) NOT NULL, UNIQUE (security_id, interval, bar_time, provider));
 CREATE INDEX IF NOT EXISTS price_bars_security_time_idx ON price_bars (security_id, interval, bar_time DESC);
-CREATE TABLE IF NOT EXISTS users (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), email TEXT NOT NULL UNIQUE, display_name TEXT, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT NOT NULL UNIQUE,
+  display_name TEXT,
+  password_hash TEXT,
+  role VARCHAR(16) NOT NULL DEFAULT 'customer' CHECK (role IN ('customer','admin')),
+  disabled_at TIMESTAMPTZ,
+  email_verified_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(16) NOT NULL DEFAULT 'customer';
+ALTER TABLE users ADD COLUMN IF NOT EXISTS disabled_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified_at TIMESTAMPTZ;
+CREATE TABLE IF NOT EXISTS user_sessions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token_hash CHAR(64) NOT NULL UNIQUE,
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS user_sessions_user_expiry_idx ON user_sessions (user_id, expires_at);
+CREATE INDEX IF NOT EXISTS user_sessions_expiry_idx ON user_sessions (expires_at);
 CREATE TABLE IF NOT EXISTS watchlists (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE, name VARCHAR(80) NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
 CREATE TABLE IF NOT EXISTS watchlist_items (watchlist_id UUID NOT NULL REFERENCES watchlists(id) ON DELETE CASCADE, security_id UUID NOT NULL REFERENCES securities(id) ON DELETE CASCADE, note TEXT, added_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), PRIMARY KEY (watchlist_id, security_id));
 CREATE TABLE IF NOT EXISTS portfolios (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE, name VARCHAR(80) NOT NULL, base_currency CHAR(3) NOT NULL DEFAULT 'NPR', created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
