@@ -8,7 +8,7 @@ import { isSameOriginRequest } from "@/lib/server/request-security";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(v=>{const d=new Date(v+"T00:00:00Z");return !Number.isNaN(d.getTime())&&d.toISOString().slice(0,10)===v;});
 const watchItem = z.object({symbol:z.string().trim().min(1).max(24),note:z.string().max(300).default("")});
 const trade = z.object({
   id:z.string().min(1).max(80),
