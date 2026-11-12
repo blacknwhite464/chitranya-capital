@@ -7,7 +7,6 @@ The website account API uses PostgreSQL, bcrypt password hashes and opaque serve
 Set these server-only environment variables in the hosting platform:
 
 - `DATABASE_URL`: PostgreSQL connection string. Use a managed database with TLS and backups.
-- `SESSION_SECRET`: generate and store a high-entropy secret (32+ random bytes). Reserved for future signed state/CSRF integrations; never expose it to browser code.
 
 Never prefix secrets with `NEXT_PUBLIC_`.
 
@@ -22,7 +21,7 @@ Run `docs/database-schema.sql` against the production PostgreSQL database using 
 - `POST /api/auth/logout`: revoke the current session.
 - `GET /api/auth/me`: return the current session identity.
 
-Session tokens are random, stored only as SHA-256 hashes in PostgreSQL and sent as HttpOnly, SameSite=Lax cookies. Cookies are Secure in production. Sessions expire after 14 days. Passwords are hashed with bcrypt (12 rounds).
+Session tokens are random, stored only as SHA-256 hashes in PostgreSQL and sent as HttpOnly, SameSite=Lax cookies. Cookies are Secure in production. Sessions expire after 14 days. Passwords are hashed with bcrypt (12 rounds). Login attempts are throttled per normalized email to 10 attempts per 15-minute window; registration is throttled to 5 attempts per email per 15-minute window. The application should also be protected by a trusted edge/WAF rate limit keyed by client IP.
 
 ## Production hardening still required before public launch
 
