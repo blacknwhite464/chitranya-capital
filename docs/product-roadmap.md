@@ -9,7 +9,7 @@
 - [x] Manual portfolio holdings and invested-cost tracking
 - [x] Weighted-average portfolio trade calculation engine (buy/sell fees and realized P/L)
 - [x] SIP and lump-sum calculators
-- [ ] Wire the trade ledger into the portfolio interface with editable/deletable transactions
+- [x] Wire a browser-local chronological trade ledger into the portfolio interface with buy/sell validation, weighted-average cost and realized P/L
 - [ ] Expand learning center into complete lessons and glossary
 - [ ] Add dedicated methodology, privacy and risk-disclosure pages
 - [ ] Add import/export and recovery for browser-local portfolio/watchlist data
