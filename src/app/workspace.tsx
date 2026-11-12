@@ -57,7 +57,7 @@ const [market,setMarket]=useState<Snapshot|null>(null),[loading,setLoading]=useS
 const [watchlist,setWatchlist]=useState<WatchItem[]>([]),[symbol,setSymbol]=useState(""),[note,setNote]=useState("");
 const [holdings,setHoldings]=useState<Holding[]>([]),[hs,setHs]=useState(""),[hq,setHq]=useState(""),[hc,setHc]=useState("");
 const [trades,setTrades]=useState<TradeEntry[]>([]),[tradeSymbol,setTradeSymbol]=useState(""),[tradeSide,setTradeSide]=useState<"buy"|"sell">("buy"),[tradeQty,setTradeQty]=useState(""),[tradePrice,setTradePrice]=useState(""),[tradeFees,setTradeFees]=useState("0"),[tradeDate,setTradeDate]=useState(new Date().toISOString().slice(0,10)),[tradeError,setTradeError]=useState(""),[editingTradeId,setEditingTradeId]=useState<string|null>(null);
-const [search,setSearch]=useState(""),[question,setQuestion]=useState("");
+const [search,setSearch]=useState("");
 const [learningLanguage,setLearningLanguage]=useState<"en"|"ne">("en"),[selectedLesson,setSelectedLesson]=useState("basics"),[glossaryQuery,setGlossaryQuery]=useState("");
 const backupInput=useRef<HTMLInputElement>(null),[backupMessage,setBackupMessage]=useState("");
 const [monthly,setMonthly]=useState("5000"),[annual,setAnnual]=useState("12"),[years,setYears]=useState("10");
