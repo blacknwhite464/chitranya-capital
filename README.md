@@ -16,7 +16,7 @@ CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio work
 - **Customer accounts:** responsive website sign-in/registration page and server-side PostgreSQL account APIs with bcrypt password hashing, opaque HttpOnly sessions and database-backed attempt throttling.
 - **Administrator website:** protected operations dashboard for customer, security-master, market-history, floorsheet, financial-report, announcement and synchronization counts.
 - **Website discoverability:** search/social metadata, crawler rules and a configurable sitemap. Email verification, recovery and production database setup remain required.
-- **Portfolio:** browser-local buy/sell ledger, weighted-average cost, realized P/L, open-position export, transaction CSV, watchlist, corporate-action ledger, allocation/concentration insights, backup/restore and position-risk calculator.
+- **Portfolio:** buy/sell ledger, weighted-average cost, realized P/L, open-position export, transaction CSV, watchlist, corporate-action ledger, allocation/concentration insights, local backup/restore, and validated account cloud backup/restore for signed-in customers.
 - **IPO and corporate actions:** source-ready workspace and manually recorded portfolio dividend/bonus/rights events.
 - **Financial tools:** SIP, lump-sum and position-sizing calculators.
 - **Learning and disclosures:** eight bilingual investing lessons, glossary, methodology, privacy and risk-disclosure pages.
