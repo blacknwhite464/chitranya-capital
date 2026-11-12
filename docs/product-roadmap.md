@@ -18,7 +18,9 @@
 - [ ] Authentication and multi-device account lifecycle
 - [ ] Complete stock discovery interface backed by a verified security master
 - [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)
-- [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)\n- [x] Export locally calculated OHLC indicators to a separate CSV for offline review
+- [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)
+- [x] Export locally calculated OHLC indicators to a separate CSV for offline review
+- [x] Show ATR 14, MACD and Bollinger Band levels in the uploaded-data analysis summary
 - [x] Define typed AI research contract and evidence-reference/risk validation gate
 - [x] Add a browser-local bilingual AI research question notebook with templates, save/load/delete and JSON export
 - [x] Add browser-native English and Nepali voice dictation for research questions (subject to browser support and permissions)
