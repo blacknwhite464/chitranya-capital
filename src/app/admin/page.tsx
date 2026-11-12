@@ -9,7 +9,8 @@ export const runtime = "nodejs";
 type Counts = { customers:string; securities:string; sessions:string; priceBars:string; floorsheet:string; financialReports:string; announcements:string; syncRuns:string };
 
 export default async function AdminPage() {
-  const user=await getSessionUser();
+  let user=null;
+  try { user=await getSessionUser(); } catch { redirect("/account"); }
   if(!user)redirect("/account");
   if(user.role!=="admin")return <main className="admin-shell"><section className="admin-panel"><p className="admin-eyebrow">CHITRANYA CAPITAL</p><h1>Administrator access required</h1><p>Your account does not have administrator permissions.</p><Link href="/">Return to website</Link></section></main>;
   let counts:Counts|null=null;let latestSync:{provider:string;data_module:string;status:string;completed_at:string|null;records_received:number}|null=null;let configured=true;
