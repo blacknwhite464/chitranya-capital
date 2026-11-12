@@ -87,7 +87,12 @@ export function validateAIResearchResponse(
     if (!item.id.trim() || !item.title.trim() || !item.sourceName.trim() || !item.excerpt.trim()) {
       errors.push("Evidence records must include an ID, title, source and excerpt.");
     }
-    if (!item.retrievedAt.trim()) errors.push(`Evidence ${item.id || "(unknown)"} is missing its retrieval timestamp.`);
+    if (!item.retrievedAt.trim() || !Number.isFinite(Date.parse(item.retrievedAt))) {
+      errors.push(`Evidence ${item.id || "(unknown)"} needs a valid retrieval timestamp.`);
+    }
+    if (item.sourceAsOf && !Number.isFinite(Date.parse(item.sourceAsOf))) {
+      errors.push(`Evidence ${item.id || "(unknown)"} has an invalid source timestamp.`);
+    }
     if (item.sourceUrl && !/^https:\/\//i.test(item.sourceUrl)) {
       errors.push(`Evidence ${item.id} has a non-HTTPS source URL.`);
     }
