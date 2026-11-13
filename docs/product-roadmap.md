@@ -27,7 +27,11 @@
 - [x] Add explicit authenticated cloud backup/restore for customer watchlists, trades, corporate-action records and screener presets with server validation
 - [x] Add customer account active-session listing and revocation of individual or all other sessions
 - [x] Add authenticated password changes with current-password verification and revocation of other sessions\n- [ ] Complete account lifecycle: email verification, password reset, deletion, admin MFA and automatic multi-device session management
-- [x] Build browser-local stock discovery directory with CSV import, strict symbol/duplicate validation, sector and text search, filtered export, one-click watchlist additions and browser persistence (source-labelled; not independently verified)
+- [x] Build browser-local stock discovery directory with CSV import, strict symbol/duplicate validation, sector and text search, filtered export, one-click watchlist additions and browser persistence
+- [x] Load a source-attributed community security master through a server-side cached endpoint
+- [x] Add a source-attributed end-of-day index snapshot from a public MIT-licensed community archive, with session-date and stale-data warnings
+- [x] Add server-side cached historical EOD OHLC endpoint for individual symbols
+- [x] Add historical stock close chart, latest archived OHLC/volume/turnover panel and watchlist symbol picker
 - [ ] Complete stock discovery interface backed by a verified security master
 - [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)
 - [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)
@@ -43,7 +47,7 @@
 - [x] Add browser-local reusable stock screener presets with validated criteria, load/delete and explicit no-live-data state
 - [ ] Implement model-backed retrieval, source ingestion and cited response generation
 
-## After MDP onboarding
+## Optional paid provider onboarding (only if cost-effective)
 - Confirm production base URL, subscribed endpoint paths and response schemas.
 - Confirm public and mobile display, historical retention, caching and derived analytics rights.
 - Implement and test the provider adapter against vendor sample responses.
