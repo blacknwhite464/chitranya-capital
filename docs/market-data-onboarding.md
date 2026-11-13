@@ -1,29 +1,51 @@
-# NEPSE market-data provider onboarding
+# Market-data sources and cost strategy
 
-CHITRANYA CAPITAL is preparing to integrate Source Code Pvt. Ltd.'s Market Data Provider (MDP).
+CHITRANYA CAPITAL does not require a paid MDP subscription to provide historical research tools. The default market snapshot uses a public, MIT-licensed community archive for completed NEPSE sessions. Paid live data remains optional and disabled unless deliberately configured.
 
-## Public documentation currently confirms
+## Default: community end-of-day archive
 
-- Documentation: https://data.smartwealthpro.com/documentation/
-- UAT base URL shown in the documentation: https://uat.sourcecode.com.np
-- Required request headers: `ApiKey`, `ApiSecret`, `AccessId`, `ApiVersion`, and `Content-Type: application/json`.
-- The documentation describes NEPSE data, indices, live stock data, today's prices, floorsheet, corporate actions, financial reports, ratios and company profiles.
+- Dataset: [Nepal Market Data](https://github.com/binayabaral/nepal-market-data)
+- Dataset browser: https://binayabaral.github.io/nepal-market-data/
+- Index CSV: https://raw.githubusercontent.com/binayabaral/nepal-market-data/main/data/nepse/NEPSE_INDEX.csv
+- Security master: https://raw.githubusercontent.com/binayabaral/nepal-market-data/main/data/reference/nepse-symbols.csv
+- License: MIT, see [upstream LICENSE](https://github.com/binayabaral/nepal-market-data/blob/main/LICENSE).
+- Attribution: Nepal Market Data by Binaya Baral.
+- Dataset documentation describes daily-updated NEPSE stock and index CSVs, their fields, missing-session behavior and raw (unadjusted) prices.
 
-The UAT URL is not assumed to be the production URL. Obtain the production base URL and current endpoint specifications directly from the provider before enabling requests.
+This is a third-party community-maintained dataset, not a live NEPSE feed or an exchange endorsement. Its source README says its figures are collected from public sources. CHITRANYA CAPITAL labels these values as historical end-of-day data and displays the source session date. If the archive is old or unavailable, the UI must make that clear and must not present it as today's quote.
 
-## Ask the provider to confirm in writing
+### Important data limitations
 
-1. Production base URL and current API version.
-2. Endpoint paths and response schemas for market status, NEPSE index, sub-indices, all stock quotes, historical OHLC, floorsheet, company fundamentals, financial reports, dividends and announcements.
-3. Whether the licence permits public display on CHITRANYA CAPITAL's website and future mobile app.
-4. Whether historical storage, caching, charting, AI analysis and derived analytics are permitted.
-5. Attribution requirements, rate limits, polling guidance, IP allow-listing and service-level terms.
-6. Test credentials and a sample response for each subscribed endpoint.
-7. Subscription fees and renewal terms.
+- No intraday/live quotes, order book, market depth or guaranteed real-time refresh.
+- The index CSV supplies index OHLC, percentage change and turnover; it does not supply advances/declines breadth.
+- Per-symbol files contain raw traded prices, not corporate-action-adjusted total returns. Bonus shares, rights issues and splits can create misleading apparent price drops. Do not calculate total-return performance across corporate actions without separately verified adjustment data.
+- Some securities may not have traded in a recent session; a missing recent row is not a zero price.
+- Third-party archive accuracy, completeness and availability are not guaranteed by CHITRANYA CAPITAL.
 
-## Local secret configuration
+## Optional paid provider: Source Code MDP
 
-Copy `.env.example` to `.env.local` and enter the provider-issued values locally:
+MDP can be reconsidered only if its subscription cost and permitted-use terms make sense. No credentials or paid requests are needed for the default community EOD path.
+
+Official documentation: https://data.smartwealthpro.com/documentation/
+
+Before enabling a paid provider, confirm in writing:
+1. Total subscription fees, renewals, taxes and any usage charges.
+2. Production base URL and endpoint paths / response schemas.
+3. Rights for public website display, caching, historical storage, charting, derived analytics and AI analysis.
+4. Attribution, rate limits, polling, IP allow-listing and SLA.
+5. Test credentials and representative response payloads.
+
+Do not assume the UAT URL is the production URL or guess endpoint paths.
+
+## Configuration
+
+The default setting is:
+
+```env
+MARKET_DATA_PROVIDER=community-eod
+```
+
+To deliberately select the paid adapter boundary (not yet implemented), set:
 
 ```env
 MARKET_DATA_PROVIDER=source-code-mdp
@@ -32,11 +54,15 @@ MDP_API_KEY=
 MDP_API_SECRET=
 MDP_ACCESS_ID=
 MDP_API_VERSION=1.0
-MARKET_DATA_MODE=unconfigured
 ```
 
-Never commit `.env.local`, place credentials in `NEXT_PUBLIC_*` variables, or paste API secrets into chat. The repository ignores local environment files.
+All provider credentials are server-side only. Never use `NEXT_PUBLIC_*` variables for secrets or commit `.env.local`.
 
-## Integration rule
+## Data integrity rules
 
-Do not guess endpoint paths or field mappings. Implement and test the adapter only after receiving the provider's current production specification and permitted-use terms. Missing data remains null; it must never be represented as zero or a fabricated live quote.
+- Label completed-session values as EOD, never live.
+- Show the source and actual session date.
+- Preserve missing values as null; never substitute zero.
+- Do not calculate breadth from an index-only file.
+- Keep user-uploaded data distinct from external archive data.
+- Implement additional data fields only against documented, checked schemas.
