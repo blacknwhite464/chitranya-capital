@@ -2,7 +2,7 @@ import "server-only";
 import { createHash } from "node:crypto";
 import { getDb } from "@/lib/server/db";
 
-export async function allowAuthAttempt(action: "login" | "register", identity: string, limit: number) {
+export async function allowAuthAttempt(action: "login" | "register" | "password", identity: string, limit: number) {
   const key = createHash("sha256").update(action+"|"+identity.trim().toLowerCase()).digest("hex");
   const result = await getDb().query(
     `INSERT INTO auth_rate_limits (action_key, window_started, attempt_count)
