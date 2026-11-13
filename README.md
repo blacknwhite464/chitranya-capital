@@ -8,8 +8,8 @@ CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio work
 ## Product modules
 
 - **Market dashboard:** clear no-feed state; no prices or market breadth are fabricated. Historical context can be added from user-imported files.
-- **Stock research:** company discovery workspace, technical-analysis engine and user-uploaded OHLC analysis.
-- **Technical analysis:** SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci retracement and classic pivot levels.
+- **Stock research:** local company directory imports, per-stock OHLC history, financial statement imports and calculated ratios; no external market-data API.
+- **Technical analysis:** SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci retracement and classic pivot levels calculated from imported CSV data.
 - **AI research workspace:** bilingual English/Nepali research notebook, prompt templates, saved questions and browser voice dictation. Model-backed answers are not connected yet.
 - **Stock screener:** reusable saved criteria plus a local CSV screener for user-supplied stock-universe data, with sector/search/numeric filters and filtered CSV export.
 - **Broker intelligence:** floorsheet analytics workspace awaiting licensed floorsheet data.
@@ -25,7 +25,7 @@ CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio work
 
 - No fabricated NEPSE prices, indices, movers, broker activity, financial ratios, IPO dates or announcements.
 - No external market-data API, API key or paid subscription is required. Market figures are not fetched automatically: users import their own verified CSV files and calculations run in the browser. The dashboard clearly states that no live feed is connected.
-- CSV analysis and portfolio records are processed/stored in the user's browser. They are not synced to a cloud account.
+- CSV analysis, security master, stock history, financial records and portfolio records are processed/stored in the user's browser. They are not automatically synced to a cloud account.
 - The AI research notebook stores questions; it does not generate AI answers until a model and evidence-retrieval service are connected.
 - Broker, floorsheet, company financials and announcement feeds require verified sources.
 - Portfolio unrealized P/L is not calculated without verified current prices.
