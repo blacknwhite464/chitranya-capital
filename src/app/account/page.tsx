@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CircleUserRound, LoaderCircle, LogIn, LogOut, ShieldCheck, UserPlus } from "lucide-react";
 
-type User = { id: string; email: string; display_name: string | null; role: string };
+type User = { id: string; email: string; display_name: string | null; role: string };\ntype AccountSession = { id:string; created_at:string; expires_at:string; current:boolean };
 
 export default function AccountPage() {
   const [mode,setMode]=useState<"login"|"register">("login");
@@ -14,7 +14,7 @@ export default function AccountPage() {
   const [password,setPassword]=useState("");
   const [busy,setBusy]=useState(true);
   const [error,setError]=useState("");
-  const [notice,setNotice]=useState("");
+  const [notice,setNotice]=useState("");\n  const [sessions,setSessions]=useState<AccountSession[]>([]);\n  const [sessionBusy,setSessionBusy]=useState(false);
 
   async function refresh() {
     setBusy(true);
@@ -26,7 +26,7 @@ export default function AccountPage() {
     } catch { setError("Could not connect to the account service."); }
     finally { setBusy(false); }
   }
-  useEffect(()=>{void refresh();},[]);
+  useEffect(()=>{void refresh();},[]);\n\n  async function loadSessions(){\n    try{const r=await fetch("/api/auth/sessions",{cache:"no-store"});const d=await r.json();if(r.ok)setSessions(d.sessions??[]);}\n    catch{/* Session list is an optional account panel. */}\n  }\n\n  useEffect(()=>{if(user)void loadSessions();else setSessions([]);},[user?.id]);\n\n  async function revokeSession(sessionId?:string){\n    const message=sessionId?"Revoke this device session?":"Sign out all other active sessions?";\n    if(!window.confirm(message))return;\n    setSessionBusy(true);setError("");\n    try{const r=await fetch("/api/auth/sessions",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify(sessionId?{sessionId}:{others:true})});const d=await r.json();if(!r.ok)throw new Error(d.error??"Unable to revoke sessions.");await loadSessions();setNotice("Session access updated.");}\n    catch(e){setError(e instanceof Error?e.message:"Unable to revoke sessions.");}\n    finally{setSessionBusy(false);}\n  }
 
   async function submit(event:FormEvent<HTMLFormElement>) {
     event.preventDefault();setBusy(true);setError("");setNotice("");
