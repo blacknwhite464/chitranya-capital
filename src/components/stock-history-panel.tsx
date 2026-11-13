@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Activity, Download, FileUp, Search, ShieldCheck, Trash2 } from "lucide-react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
@@ -43,8 +43,7 @@ export default function StockHistoryPanel({watchlistSymbols}:Props){
   const [loaded,setLoaded]=useState(false);
   const chartData=useMemo(()=>history.map(row=>({...row,shortDate:row.date.slice(2).replace("-","/")})),[history]);
   const loadSaved=(items:SavedHistory[],key:string)=>{const found=items.find(x=>x.symbol===key);if(found){setSymbol(found.symbol);setSource(found.source);setHistory(found.history);setFileName(found.fileName);setMessage("Loaded saved local history for "+key+".");setError("");return true;}return false;};
-  const restore=()=>{try{const raw=localStorage.getItem(STORE);if(raw){const parsed=JSON.parse(raw);if(Array.isArray(parsed))setSaved(parsed);}}catch{setError("Saved history could not be restored. Import your CSV again.");}setLoaded(true);};
-  useMemo(()=>{if(typeof window!=="undefined"&&!loaded)restore();return null;},[loaded]);
+  useEffect(()=>{try{const raw=localStorage.getItem(STORE);if(raw){const parsed=JSON.parse(raw);if(Array.isArray(parsed))setSaved(parsed);}}catch{setError("Saved history could not be restored. Import your CSV again.");}setLoaded(true);},[]);
   const importFile=async(file?:File)=>{if(!file)return;setError("");setMessage("");try{if(file.size>5*1024*1024)throw new Error("CSV file must be 5 MB or smaller.");const rows=parseCsv(await file.text());const key=symbol.trim().toUpperCase();if(!/^[A-Z0-9._-]{1,24}$/.test(key))throw new Error("Enter the stock symbol before importing.");const record:SavedHistory={symbol:key,source:source.trim()||"User-imported CSV (source not specified)",asOf:rows[rows.length-1].date,history:rows,fileName:file.name};const next=[...saved.filter(x=>x.symbol!==key),record];try{localStorage.setItem(STORE,JSON.stringify(next));}catch{throw new Error("Browser storage is full. Export or remove saved history before importing.");}setSaved(next);setHistory(rows);setSymbol(key);setFileName(file.name);setMessage(rows.length.toLocaleString()+" sessions imported and saved in this browser.");}catch(e){setError(e instanceof Error?e.message:"Could not import CSV.");}finally{if(input.current)input.current.value="";}};
   const downloadCsv=()=>{const rows=[["date","open","high","low","close","change_percent","volume","turnover_npr"],...history.map(r=>[r.date,r.open,r.high,r.low,r.close,r.changePercent??"",r.volume??"",r.turnoverNpr??""])];const csv=rows.map(r=>r.join(",")).join("\r\n");const url=URL.createObjectURL(new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download=(symbol||"stock")+"-history.csv";a.click();URL.revokeObjectURL(url);};
   const latest=history.at(-1);
