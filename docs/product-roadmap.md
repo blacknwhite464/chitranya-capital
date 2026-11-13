@@ -1,4 +1,4 @@
- # CHITRANYA CAPITAL — implementation roadmap
+# CHITRANYA CAPITAL — implementation roadmap
 
 ## Offline-first foundations
 - [x] Responsive dashboard and navigation
@@ -30,6 +30,7 @@
 - [x] Build browser-local stock discovery directory with CSV import, strict symbol/duplicate validation, sector and text search, filtered export, one-click watchlist additions and browser persistence
 - [x] Import and locally persist user-provided security master CSV files
 - [x] Import and locally persist user-provided per-symbol historical OHLC CSV files
+- [x] Import financial statement CSVs and calculate net margin, ROE, ROA, debt/equity, current ratio, P/E, P/B and dividend yield locally
 - [x] Add local historical stock close chart, latest OHLC/volume/turnover panel and saved-history picker
 - [x] Remove external market-data endpoints and automatic third-party fetches
 - [ ] Complete stock discovery interface backed by a verified security master
