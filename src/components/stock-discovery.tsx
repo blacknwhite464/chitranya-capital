@@ -117,14 +117,14 @@ export default function StockDiscovery({ onAddSymbol, watchlistSymbols }: Props)
         const get = (key: string) => index(key) < 0 ? "" : (values[index(key)] ?? "").trim();
         const symbol = get("symbol").toUpperCase();
         const name = get("name");
-        const listedText = get("listed").toLowerCase();
+        const listedText = (get("status") || get("listed")).toLowerCase();
         if (!/^[A-Z0-9._-]{1,24}$/.test(symbol) || !name || name.length > 180 || !get("sector")) {
           throw new Error("Invalid symbol, company name or sector on CSV row " + (i + 2) + ".");
         }
-        if (listedText && !["true", "yes", "1", "listed", "false", "no", "0", "unlisted"].includes(listedText)) {
+        if (listedText && !["true", "yes", "1", "listed", "false", "no", "0", "unlisted", "merged"].includes(listedText)) {
           throw new Error("Use true/false in the optional listed column (row " + (i + 2) + ").");
         }
-        return { symbol, name, sector: get("sector"), isin: get("isin"), listed: !["false", "no", "0", "unlisted"].includes(listedText) };
+        return { symbol, name, sector: get("sector"), isin: get("isin"), listed: !["false", "no", "0", "unlisted", "merged"].includes(listedText), status: listedText === "merged" ? "merged" : ["false", "no", "0", "unlisted"].includes(listedText) ? "unlisted" : "listed" };
       });
       if (next.length > 10000) throw new Error("A maximum of 10,000 security records can be imported.");
       if (new Set(next.map(row => row.symbol)).size !== next.length) throw new Error("The file contains duplicate stock symbols.");
