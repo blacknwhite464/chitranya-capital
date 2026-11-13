@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { getDb } from "@/lib/server/db";
 import { getSessionUser } from "@/lib/server/session";
 import { isSameOriginRequest } from "@/lib/server/request-security";
+import { allowAuthAttempt } from "@/lib/server/auth-rate-limit";
 
 export const runtime="nodejs";
 export const dynamic="force-dynamic";
@@ -19,6 +20,7 @@ export async function POST(request:NextRequest){
   if(!user)return NextResponse.json({error:"Sign in to change your password."},{status:401});
   const parsed=schema.safeParse(await request.json().catch(()=>null));
   if(!parsed.success)return NextResponse.json({error:"Enter your current password and a new password of at least 12 characters containing letters and numbers."},{status:400});
+  if(!(await allowAuthAttempt("password",user.email,10)))return NextResponse.json({error:"Too many password change attempts. Try again in 15 minutes."},{status:429});
   const db=getDb();
   const account=await db.query("SELECT password_hash FROM users WHERE id=$1 AND disabled_at IS NULL",[user.id]);
   const stored=account.rows[0]?.password_hash;
