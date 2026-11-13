@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Download, FileUp, ShieldCheck, Trash2 } from "lucide-react";
 
 type FinancialRow = {
@@ -77,7 +77,7 @@ export default function FinancialStatementLab(){
   finally{if(input.current)input.current.value="";}
  };
  const restore=()=>{try{const raw=localStorage.getItem(STORE);if(raw){const d=JSON.parse(raw);if(Array.isArray(d.rows)){setRows(d.rows);setFileName(d.fileName||"Saved local file");setSource(d.source||"");setAsOf(d.asOf||"");}}}catch{setError("Saved financial data could not be restored.");}};
- useMemo(()=>{if(typeof window!=="undefined"&&!rows.length)restore();return null;},[]);
+ useEffect(()=>{restore();},[]);
  const exportCsv=()=>{
   const headers=["symbol","company","fiscal_year","revenue","net_profit","eps","bvps","net_margin_pct","roe_pct","roa_pct","debt_equity","current_ratio","pe","pb","dividend_yield_pct"];
   const output=[headers,...filtered.map(r=>[r.symbol,r.company,r.fiscalYear,r.revenue,r.netProfit,r.eps,r.bvps,r.netMargin,r.roe,r.roa,r.debtEquity,r.currentRatio,r.pe,r.pb,r.dividendYield])];
