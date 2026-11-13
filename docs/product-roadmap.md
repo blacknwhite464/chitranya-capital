@@ -27,6 +27,7 @@
 - [x] Add explicit authenticated cloud backup/restore for customer watchlists, trades, corporate-action records and screener presets with server validation
 - [x] Add customer account active-session listing and revocation of individual or all other sessions
 - [x] Add authenticated password changes with current-password verification and revocation of other sessions\n- [ ] Complete account lifecycle: email verification, password reset, deletion, admin MFA and automatic multi-device session management
+- [x] Build browser-local stock discovery directory with CSV import, strict symbol/duplicate validation, sector and text search, filtered export and one-click watchlist additions (source-labelled; not independently verified)
 - [ ] Complete stock discovery interface backed by a verified security master
 - [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)
 - [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)
