@@ -18,6 +18,9 @@ export default function AccountPage() {
   const [notice,setNotice]=useState("");
   const [sessions,setSessions]=useState<AccountSession[]>([]);
   const [sessionBusy,setSessionBusy]=useState(false);
+  const [currentPassword,setCurrentPassword]=useState("");
+  const [newPassword,setNewPassword]=useState("");
+  const [passwordBusy,setPasswordBusy]=useState(false);
 
   async function refresh() {
     setBusy(true);
@@ -62,6 +65,16 @@ export default function AccountPage() {
     finally { setBusy(false); }
   }
 
+  async function changePassword(event:FormEvent<HTMLFormElement>){
+    event.preventDefault();setPasswordBusy(true);setError("");setNotice("");
+    try{
+      const r=await fetch("/api/auth/password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({currentPassword,newPassword})});
+      const d=await r.json();if(!r.ok)throw new Error(d.error??"Unable to change password.");
+      setCurrentPassword("");setNewPassword("");setNotice(d.message??"Password updated.");await loadSessions();
+    }catch(e){setError(e instanceof Error?e.message:"Unable to change password.");}
+    finally{setPasswordBusy(false);}
+  }
+
   async function logout() {
     setBusy(true);setError("");
     try {
@@ -81,6 +94,13 @@ export default function AccountPage() {
         <p className="account-subtitle">Your website account is signed in.</p>
         <div className="account-user"><span>Email</span><strong>{user.email}</strong><span>Account type</span><strong>{user.role==="admin"?"Administrator":"Customer"}</strong></div>
         <section className="account-sessions"><div className="account-sessions-head"><div><h2>Active sessions</h2><p>Devices currently signed in to your account.</p></div><button type="button" onClick={()=>void revokeSession()} disabled={sessionBusy||sessions.length<2}>Sign out other devices</button></div>{sessions.length===0?<p className="account-session-empty">No active session details available.</p>:sessions.map(session=><div className="account-session-row" key={session.id}><div><strong>{session.current?"This device":"Other device"}</strong><span>Signed in {new Date(session.created_at).toLocaleString("en-GB")}</span><small>Expires {new Date(session.expires_at).toLocaleDateString("en-GB")}</small></div>{!session.current&&<button type="button" disabled={sessionBusy} onClick={()=>void revokeSession(session.id)}>Revoke</button>}</div>)}</section>
+        <form className="account-password-form" onSubmit={changePassword}>
+          <h2>Change password</h2>
+          <label>Current password<input type="password" autoComplete="current-password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)} required maxLength={128}/></label>
+          <label>New password<input type="password" autoComplete="new-password" value={newPassword} onChange={e=>setNewPassword(e.target.value)} required minLength={12} maxLength={128} placeholder="At least 12 characters, letters and numbers"/></label>
+          <button type="submit" disabled={passwordBusy||!currentPassword||!newPassword}>{passwordBusy?<LoaderCircle size={15} className="spin"/>:<ShieldCheck size={15}/>} Update password</button>
+          <p>Updating your password signs out other active devices.</p>
+        </form>
         <button className="account-submit" onClick={()=>void logout()} disabled={busy}>{busy?<LoaderCircle size={17} className="spin"/>:<LogOut size={17}/>} Sign out</button>
       </> : <>
         <p className="account-eyebrow">CHITRANYA CAPITAL ACCOUNT</p><h1>{mode==="login"?"Welcome back":"Create your account"}</h1>
