@@ -1,68 +1,41 @@
-# Market-data sources and cost strategy
+# Offline market-data workflow
 
-CHITRANYA CAPITAL does not require a paid MDP subscription to provide historical research tools. The default market snapshot uses a public, MIT-licensed community archive for completed NEPSE sessions. Paid live data remains optional and disabled unless deliberately configured.
+CHITRANYA CAPITAL's market research workspace does not require an external market-data API, paid subscription, API key or automatic data feed.
 
-## Default: community end-of-day archive
+## How data enters the website
 
-- Dataset: [Nepal Market Data](https://github.com/binayabaral/nepal-market-data)
-- Dataset browser: https://binayabaral.github.io/nepal-market-data/
-- Index CSV: https://raw.githubusercontent.com/binayabaral/nepal-market-data/main/data/nepse/NEPSE_INDEX.csv
-- Security master: https://raw.githubusercontent.com/binayabaral/nepal-market-data/main/data/reference/nepse-symbols.csv
-- License: MIT, see [upstream LICENSE](https://github.com/binayabaral/nepal-market-data/blob/main/LICENSE).
-- Attribution: Nepal Market Data by Binaya Baral.
-- Dataset documentation describes daily-updated NEPSE stock and index CSVs, their fields, missing-session behavior and raw (unadjusted) prices.
+Users import source files directly into the website. The browser parses and validates the files, performs calculations locally and stores supported research datasets in browser storage. The website does not fetch market prices or company records from a third-party endpoint.
 
-This is a third-party community-maintained dataset, not a live NEPSE feed or an exchange endorsement. Its source README says its figures are collected from public sources. CHITRANYA CAPITAL labels these values as historical end-of-day data and displays the source session date. If the archive is old or unavailable, the UI must make that clear and must not present it as today's quote.
+Supported workflows:
+- Security master CSV: symbol, name, sector, ISIN and listing status.
+- Historical OHLC CSV: date, open, high, low, close; optional volume, percentage change and turnover.
+- Technical indicators: SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots, calculated locally from imported OHLC.
+- Portfolio: manual transaction records, cost basis and realized P/L, stored locally.
+- Corporate actions: manually entered and source-labelled dividend, bonus and rights events.
+- Screener: user-imported security/financial CSV with filters and export.
 
-### Important data limitations
+## Security master CSV
 
-- No intraday/live quotes, order book, market depth or guaranteed real-time refresh.
-- The index CSV supplies index OHLC, percentage change and turnover; it does not supply advances/declines breadth.
-- Per-symbol files contain raw traded prices, not corporate-action-adjusted total returns. Bonus shares, rights issues and splits can create misleading apparent price drops. Do not calculate total-return performance across corporate actions without separately verified adjustment data.
-- Some securities may not have traded in a recent session; a missing recent row is not a zero price.
-- Third-party archive accuracy, completeness and availability are not guaranteed by CHITRANYA CAPITAL.
+Required columns: `symbol,name,sector`
+Optional: `isin,listed`
 
-## Optional paid provider: Source Code MDP
+The import validates symbols, required names/sectors and duplicate symbols. It does not assert that a company is currently listed. The user should record the publisher and effective date.
 
-MDP can be reconsidered only if its subscription cost and permitted-use terms make sense. No credentials or paid requests are needed for the default community EOD path.
+## Historical OHLC CSV
 
-Official documentation: https://data.smartwealthpro.com/documentation/
+Required columns: `date,open,high,low,close`
+Accepted date aliases include `published_date` and `tradedate`. Optional columns include `per_change`, `traded_quantity`, and `traded_amount`.
 
-Before enabling a paid provider, confirm in writing:
-1. Total subscription fees, renewals, taxes and any usage charges.
-2. Production base URL and endpoint paths / response schemas.
-3. Rights for public website display, caching, historical storage, charting, derived analytics and AI analysis.
-4. Attribution, rate limits, polling, IP allow-listing and SLA.
-5. Test credentials and representative response payloads.
+Files must be checked for source, symbol, currency, units, date range and corporate-action adjustments before analysis. Prices are not automatically adjusted for bonus issues, rights issues, splits or dividends. The app preserves missing data rather than filling it with zero.
 
-Do not assume the UAT URL is the production URL or guess endpoint paths.
+## Local storage and portability
 
-## Configuration
+Imported security master and per-symbol OHLC histories are stored in the browser's local storage. They remain on that browser profile and device unless the user exports a copy. Clearing browser storage or changing devices can remove access. Export CSV backups regularly. Do not upload confidential or licensed data unless its terms allow that use.
 
-The default setting is:
+## Live market data
 
-```env
-MARKET_DATA_PROVIDER=community-eod
-```
+Live quotes, market depth, official market breadth and automatic exchange updates are intentionally not provided in the no-API version. The dashboard clearly shows that no feed is connected. A manual file import can add historical context but must never be described as live.
 
-To deliberately select the paid adapter boundary (not yet implemented), set:
+## Optional future provider
 
-```env
-MARKET_DATA_PROVIDER=source-code-mdp
-MDP_API_BASE_URL=
-MDP_API_KEY=
-MDP_API_SECRET=
-MDP_ACCESS_ID=
-MDP_API_VERSION=1.0
-```
-
-All provider credentials are server-side only. Never use `NEXT_PUBLIC_*` variables for secrets or commit `.env.local`.
-
-## Data integrity rules
-
-- Label completed-session values as EOD, never live.
-- Show the source and actual session date.
-- Preserve missing values as null; never substitute zero.
-- Do not calculate breadth from an index-only file.
-- Keep user-uploaded data distinct from external archive data.
-- Implement additional data fields only against documented, checked schemas.
+An external provider can be evaluated later only if the user explicitly chooses one and its cost and permitted-use terms are acceptable. No provider is required for the current build.
