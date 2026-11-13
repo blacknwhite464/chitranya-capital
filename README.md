@@ -24,7 +24,7 @@ CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio work
 ## Data integrity and current limitations
 
 - No fabricated NEPSE prices, indices, movers, broker activity, financial ratios, IPO dates or announcements.
-- Market data is disabled until an authorized provider supplies the production endpoint specifications, credentials and permitted-use terms.
+- The default market snapshot uses a public, MIT-licensed community dataset for historical end-of-day NEPSE index data. It is unofficial, may be delayed, and is never labelled live. No paid MDP subscription is required for this default path.
 - CSV analysis and portfolio records are processed/stored in the user's browser. They are not synced to a cloud account.
 - The AI research notebook stores questions; it does not generate AI answers until a model and evidence-retrieval service are connected.
 - Broker, floorsheet, company financials and announcement feeds require verified sources.
@@ -60,21 +60,11 @@ npm run lint
 npm run build
 ```
 
-## Authorized market-data setup
+## Market-data source and cost strategy
 
-The server reads these environment variables:
+The default setting is `MARKET_DATA_PROVIDER=community-eod`, using the [Nepal Market Data](https://github.com/binayabaral/nepal-market-data) public MIT-licensed dataset for historical completed-session data. The source is unofficial, not an exchange feed; the UI shows its session date and warns when the archive is stale. It does not provide live quotes or market breadth. Source credit and limitations are documented in `docs/market-data-onboarding.md`.
 
-```env
-MARKET_DATA_PROVIDER=source-code-mdp
-MDP_API_BASE_URL=
-MDP_API_KEY=
-MDP_API_SECRET=
-MDP_ACCESS_ID=
-MDP_API_VERSION=1.0
-MARKET_DATA_MODE=unconfigured
-```
-
-Never add provider secrets to `NEXT_PUBLIC_*` variables or commit credentials. The Source Code MDP adapter must be implemented only after receiving the subscribed production endpoint paths, request/response schemas, sample payloads and written permissions for display, storage, derived analytics and AI use. Do not scrape or redistribute data without authorization.
+A paid provider such as Source Code MDP is optional, not a dependency. Reconsider one only after reviewing price and licensing terms. Never add provider secrets to `NEXT_PUBLIC_*` variables or commit credentials.
 
 See `docs/market-data-onboarding.md`, `docs/data-import-formats.md`, `docs/account-security.md`, `docs/production-launch-checklist.md` and `docs/product-roadmap.md`.
 
@@ -84,7 +74,7 @@ CHITRANYA CAPITAL is being developed as a responsive website. There is no separa
 
 ## Planned production milestones
 
-1. Complete authorized MDP onboarding and schema-validated market-data adapter.
+1. Improve the no-cost EOD data path, security master and per-stock historical charts; evaluate paid live-data providers only if cost-effective.
 2. Connect PostgreSQL through secure server-side migrations and repository services.
 3. Add user authentication, cloud portfolios, multi-device sync and account recovery.
 4. Implement verified security master, historical price storage, scheduled sync and visible source timestamps.
