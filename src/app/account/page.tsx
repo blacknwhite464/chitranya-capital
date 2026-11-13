@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, CircleUserRound, LoaderCircle, LogIn, LogOut, ShieldCheck, UserPlus } from "lucide-react";
+import { ArrowLeft, CircleUserRound, Download, LoaderCircle, LogIn, LogOut, ShieldCheck, UserPlus } from "lucide-react";
 
 type User = { id: string; email: string; display_name: string | null; role: string };
 type AccountSession = { id:string; created_at:string; expires_at:string; current:boolean };
@@ -75,6 +75,21 @@ export default function AccountPage() {
     finally{setPasswordBusy(false);}
   }
 
+  async function exportAccountData(){
+    setError("");setNotice("");
+    try{
+      const response=await fetch("/api/account/export",{credentials:"same-origin",cache:"no-store"});
+      if(!response.ok){const data=await response.json().catch(()=>({}));throw new Error(data.error??"Unable to export account data.");}
+      const blob=await response.blob();
+      const url=URL.createObjectURL(blob);
+      const anchor=document.createElement("a");
+      anchor.href=url;
+      anchor.download="chitranya-capital-account.json";
+      document.body.appendChild(anchor);anchor.click();anchor.remove();URL.revokeObjectURL(url);
+      setNotice("Your account data export has been downloaded.");
+    }catch(e){setError(e instanceof Error?e.message:"Unable to export account data.");}
+  }
+
   async function logout() {
     setBusy(true);setError("");
     try {
@@ -101,6 +116,8 @@ export default function AccountPage() {
           <button type="submit" disabled={passwordBusy||!currentPassword||!newPassword}>{passwordBusy?<LoaderCircle size={15} className="spin"/>:<ShieldCheck size={15}/>} Update password</button>
           <p>Updating your password signs out other active devices.</p>
         </form>
+        <button className="account-submit" type="button" onClick={()=>void exportAccountData()}><Download size={17}/> Export my account data</button>
+        <p className="account-hint">Exports your account profile and the latest workspace backup saved to your account. Browser-only records not yet synced are not included.</p>
         <button className="account-submit" onClick={()=>void logout()} disabled={busy}>{busy?<LoaderCircle size={17} className="spin"/>:<LogOut size={17}/>} Sign out</button>
       </> : <>
         <p className="account-eyebrow">CHITRANYA CAPITAL ACCOUNT</p><h1>{mode==="login"?"Welcome back":"Create your account"}</h1>
