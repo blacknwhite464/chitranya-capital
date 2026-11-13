@@ -3,11 +3,11 @@
 **Smarter Investing. Better Decisions.**  
 AI-powered financial intelligence for Nepal's capital market.
 
-CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio workspace. The website is the first product; mobile access follows after the data and account foundations are ready.
+CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio workspace. The responsive website is the product; no separate native app is required for this phase.
 
 ## Product modules
 
-- **Market dashboard:** NEPSE index snapshot, turnover and breadth interface. Live values remain unavailable until an authorized market-data provider is connected.
+- **Market dashboard:** clear no-feed state; no prices or market breadth are fabricated. Historical context can be added from user-imported files.
 - **Stock research:** company discovery workspace, technical-analysis engine and user-uploaded OHLC analysis.
 - **Technical analysis:** SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci retracement and classic pivot levels.
 - **AI research workspace:** bilingual English/Nepali research notebook, prompt templates, saved questions and browser voice dictation. Model-backed answers are not connected yet.
@@ -24,7 +24,7 @@ CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio work
 ## Data integrity and current limitations
 
 - No fabricated NEPSE prices, indices, movers, broker activity, financial ratios, IPO dates or announcements.
-- The default market snapshot uses a public, MIT-licensed community dataset for historical end-of-day NEPSE index data. It is unofficial, may be delayed, and is never labelled live. No paid MDP subscription is required for this default path.
+- No external market-data API, API key or paid subscription is required. Market figures are not fetched automatically: users import their own verified CSV files and calculations run in the browser. The dashboard clearly states that no live feed is connected.
 - CSV analysis and portfolio records are processed/stored in the user's browser. They are not synced to a cloud account.
 - The AI research notebook stores questions; it does not generate AI answers until a model and evidence-retrieval service are connected.
 - Broker, floorsheet, company financials and announcement feeds require verified sources.
@@ -37,7 +37,7 @@ CHITRANYA CAPITAL is an independent NEPSE research, analytics and portfolio work
 - Tailwind CSS and Recharts
 - Zod for validation
 - PostgreSQL schema foundation in `docs/database-schema.sql`
-- Server-side market-provider adapter boundary
+- Browser-local CSV import and market calculations; no external market-data provider dependency
 - GitHub Actions typecheck and production build workflow
 
 ## Local development
@@ -62,9 +62,7 @@ npm run build
 
 ## Market-data source and cost strategy
 
-The default setting is `MARKET_DATA_PROVIDER=community-eod`, using the [Nepal Market Data](https://github.com/binayabaral/nepal-market-data) public MIT-licensed dataset for historical completed-session data. The source is unofficial, not an exchange feed; the UI shows its session date and warns when the archive is stale. It does not provide live quotes or market breadth. Source credit and limitations are documented in `docs/market-data-onboarding.md`.
-
-A paid provider such as Source Code MDP is optional, not a dependency. Reconsider one only after reviewing price and licensing terms. Never add provider secrets to `NEXT_PUBLIC_*` variables or commit credentials.
+The website uses a fully offline market-data workflow. Import a security-master CSV and per-stock OHLC CSV files from sources you trust. Files are validated and analyzed in the browser, with local storage and CSV export. There are no market-data network calls or provider credentials. Live quotes, breadth and automatic exchange updates remain unavailable until a future provider is explicitly chosen.
 
 See `docs/market-data-onboarding.md`, `docs/data-import-formats.md`, `docs/account-security.md`, `docs/production-launch-checklist.md` and `docs/product-roadmap.md`.
 
@@ -74,7 +72,7 @@ CHITRANYA CAPITAL is being developed as a responsive website. There is no separa
 
 ## Planned production milestones
 
-1. Improve the no-cost EOD data path, security master and per-stock historical charts; evaluate paid live-data providers only if cost-effective.
+1. Improve local CSV import, security master, historical charts and fundamentals analysis; no external market-data API is required.
 2. Connect PostgreSQL through secure server-side migrations and repository services.
 3. Add user authentication, cloud portfolios, multi-device sync and account recovery.
 4. Implement verified security master, historical price storage, scheduled sync and visible source timestamps.
