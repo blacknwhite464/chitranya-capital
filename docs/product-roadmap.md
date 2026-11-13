@@ -1,9 +1,9 @@
-# CHITRANYA CAPITAL — implementation roadmap
+ # CHITRANYA CAPITAL — implementation roadmap
 
-## Built without a market API
+## Offline-first foundations
 - [x] Responsive dashboard and navigation
-- [x] Honest unavailable-data states and server-side market API boundary
-- [x] MDP environment template and provider adapter contract
+- [x] Honest unavailable-data states with no automatic market-data network calls
+- [x] Remove external community-data and paid MDP market endpoints from the website
 - [x] Domain contracts and PostgreSQL schema draft
 - [x] Extend PostgreSQL schema for indices, brokers, floorsheet, financial reports, announcements, user preferences, portfolio events and AI research provenance
 - [x] Browser-local watchlist management
@@ -28,10 +28,10 @@
 - [x] Add customer account active-session listing and revocation of individual or all other sessions
 - [x] Add authenticated password changes with current-password verification and revocation of other sessions\n- [ ] Complete account lifecycle: email verification, password reset, deletion, admin MFA and automatic multi-device session management
 - [x] Build browser-local stock discovery directory with CSV import, strict symbol/duplicate validation, sector and text search, filtered export, one-click watchlist additions and browser persistence
-- [x] Load a source-attributed community security master through a server-side cached endpoint
-- [x] Add a source-attributed end-of-day index snapshot from a public MIT-licensed community archive, with session-date and stale-data warnings
-- [x] Add server-side cached historical EOD OHLC endpoint for individual symbols
-- [x] Add historical stock close chart, latest archived OHLC/volume/turnover panel and watchlist symbol picker
+- [x] Import and locally persist user-provided security master CSV files
+- [x] Import and locally persist user-provided per-symbol historical OHLC CSV files
+- [x] Add local historical stock close chart, latest OHLC/volume/turnover panel and saved-history picker
+- [x] Remove external market-data endpoints and automatic third-party fetches
 - [ ] Complete stock discovery interface backed by a verified security master
 - [x] Pure TypeScript technical indicator engine (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, Fibonacci and classic pivots)
 - [x] Add browser-local OHLC CSV analysis with close/SMA/EMA, RSI and MACD charts plus Fibonacci and classic pivot levels (user-supplied data only; no live-feed claims)
@@ -47,19 +47,20 @@
 - [x] Add browser-local reusable stock screener presets with validated criteria, load/delete and explicit no-live-data state
 - [ ] Implement model-backed retrieval, source ingestion and cited response generation
 
-## Optional paid provider onboarding (only if cost-effective)
-- Confirm production base URL, subscribed endpoint paths and response schemas.
-- Confirm public and mobile display, historical retention, caching and derived analytics rights.
-- Implement and test the provider adapter against vendor sample responses.
-- Add scheduled synchronization with rate-limit-aware caching and visible last-sync time.
-- Persist normalized records with provider and ingestion timestamps for auditability.
-- Enable live values only after schema validation and source timestamp checks.
+## Optional future work (no API required)
+- [ ] Add a local financial-statement CSV importer and calculate profitability, leverage and liquidity ratios.
+- [ ] Add local company comparison using imported statement and price files.
+- [ ] Add local IPO / corporate-action register import and source-date validation.
+- [ ] Add offline research report export with data provenance and assumptions.
+- [ ] Improve local backup / restore for security master and OHLC history across devices.
+- [ ] Only if explicitly requested later, evaluate external market-data providers; no API is required for the current product.
 
 ## Data integrity
 - Never use sample or guessed values for live market data.
-- Preserve provider timestamps and ingestion timestamps separately.
-- Store money and quantities using decimal database types.
-- Label live, delayed and end-of-day data distinctly.
-- Keep provider credentials server-side; never expose secrets in public environment variables.
+- Distinguish user-imported data from verified public disclosures.
+- Preserve source, import timestamp, effective date, units and currency.
+- Preserve missing values as null; do not fill with zero.
+- Do not imply imported CSV values are live or independently verified.
+- No market-data API keys or external provider credentials are required.
 - AI outputs distinguish sourced facts, calculations, assumptions and scenarios.
 - A visible screen is not considered complete until its interactions, validation, persistence, error states and responsive behavior work.
