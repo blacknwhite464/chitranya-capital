@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Building2, Download, FileUp, Plus, Search, ShieldCheck, RefreshCw } from "lucide-react";
+import { Building2, Download, FileUp, Plus, Search, ShieldCheck } from "lucide-react";
 
 type SecurityRow = { symbol: string; name: string; sector: string; isin: string; listed: boolean; sourceCategory?: string; instrumentType?: string; status?: string };
 type Props = { onAddSymbol: (symbol: string) => void; watchlistSymbols: string[] };
@@ -41,7 +41,6 @@ export default function StockDiscovery({ onAddSymbol, watchlistSymbols }: Props)
   const [asOf, setAsOf] = useState("");
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
-  const [directoryLoading, setDirectoryLoading] = useState(false);
 
   useEffect(() => {
     try {
@@ -76,33 +75,6 @@ export default function StockDiscovery({ onAddSymbol, watchlistSymbols }: Props)
     (sector === "All sectors" || row.sector === sector) &&
     (row.symbol + " " + row.name + " " + row.sector + " " + row.isin + " " + (row.sourceCategory ?? "") + " " + (row.instrumentType ?? "")).toLowerCase().includes(query.trim().toLowerCase())
   ).sort((a, b) => a.symbol.localeCompare(b.symbol)), [rows, sector, query]);
-
-  const loadCommunityDirectory = async () => {
-    setDirectoryLoading(true);
-    setMessage("");
-    try {
-      const response = await fetch("/api/securities", { cache: "no-store" });
-      const data = await response.json();
-      if (!response.ok || !Array.isArray(data.securities)) throw new Error(data.error || "Could not load the community security directory.");
-      const next: SecurityRow[] = data.securities.map((row: { symbol: string; name: string; sector: string; sourceCategory: string; instrumentType: string; status: string }) => ({
-        symbol: row.symbol, name: row.name, sector: row.sector || "", isin: "",
-        listed: row.status === "listed", status: row.status,
-        sourceCategory: row.sourceCategory, instrumentType: row.instrumentType
-      }));
-      if (!next.length || new Set(next.map(row => row.symbol)).size !== next.length) throw new Error("The community directory did not pass duplicate and content checks.");
-      setRows(next);
-      setSource(typeof data.source === "string" ? data.source : "Community dataset");
-      setAsOf("");
-      setFileName("Community security master");
-      setSector("All sectors");
-      setQuery("");
-      setMessage(next.length.toLocaleString() + " securities loaded from the community dataset. This is an unofficial reference list, not a live market feed.");
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Could not load the community security directory.");
-    } finally {
-      setDirectoryLoading(false);
-    }
-  };
 
   const importFile = async (file: File) => {
     try {
@@ -163,7 +135,6 @@ export default function StockDiscovery({ onAddSymbol, watchlistSymbols }: Props)
     <div className="stock-discovery-heading">
       <div><span className="banner-kicker">SECURITY MASTER</span><h3>Discover listed companies</h3><p>Search and filter an imported company directory. No guessed company list or market values.</p></div>
       <div className="stock-discovery-actions">
-        <button type="button" className="secondary-button" onClick={() => void loadCommunityDirectory()} disabled={directoryLoading}><RefreshCw size={14}/>{directoryLoading ? "Loading…" : "Load free directory"}</button>
         <button type="button" className="secondary-button" onClick={downloadTemplate}><Download size={14}/>CSV template</button>
         <button type="button" className="primary-button" onClick={() => input.current?.click()}><FileUp size={14}/>Import directory</button>
         <input ref={input} type="file" accept=".csv,text/csv" hidden onChange={event => { const file = event.target.files?.[0]; if (file) void importFile(file); }}/>
@@ -190,7 +161,7 @@ export default function StockDiscovery({ onAddSymbol, watchlistSymbols }: Props)
       </div>
       {filtered.length > 500 && <p className="privacy-note">Showing 500 of {filtered.length.toLocaleString()} matches. Export results to download the complete filtered directory.</p>}
     </> : <div className="stock-discovery-empty"><Building2 size={22}/><strong>No security directory imported</strong><p>Import a CSV from an authorized or otherwise verified source to unlock company search, sector filtering and one-click watchlist additions.</p><button type="button" className="secondary-button" onClick={downloadTemplate}><Download size={14}/>Download CSV template</button></div>}
-    <div className="stock-discovery-trust"><ShieldCheck size={15}/><span>Community directory data is unofficial and may lag exchange changes. CSV imports are user-supplied. Company listings are reference information only; no prices or financial figures are included. Source: <a href="https://github.com/binayabaral/nepal-market-data" target="_blank" rel="noreferrer">Nepal Market Data (MIT)</a>.</span></div>
+    <div className="stock-discovery-trust"><ShieldCheck size={15}/><span>Community directory data is unofficial and may lag exchange changes. CSV imports are user-supplied. Company listings are reference information only; no prices or financial figures are included. Directory data is imported from a file you provide.</span></div>
     {message && <p className="research-notebook-message" role="status">{message}</p>}
   </section>;
 }
