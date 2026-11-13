@@ -72,6 +72,7 @@ export default function OHLCAnalysisLab() {
   })), [bars, analysis]);
   const latest = rows.at(-1);
   const levels = useMemo(() => { if (bars.length < 2) return null; const high = Math.max(...bars.map(bar => bar.high)); const low = Math.min(...bars.map(bar => bar.low)); const previous = bars.at(-1)!; return { fibonacci: fibonacciRetracement(high, low), pivots: classicPivotLevels(previous.high, previous.low, previous.close) }; }, [bars]);
+  const downloadTemplate = () => { const csv="Date,Open,High,Low,Close,Volume\\r\\n"; const url=URL.createObjectURL(new Blob(["\\uFEFF",csv],{type:"text/csv;charset=utf-8"})); const link=document.createElement("a"); link.href=url; link.download="chitranya-ohlc-template.csv"; link.click(); URL.revokeObjectURL(url); };
   const downloadAnalysis = () => {
     const columns = ["Date","Open","High","Low","Close","Volume","SMA20","EMA12","RSI14","MACD","MACD Signal"];
     const quote = (item: string | number | null | undefined) => {
@@ -104,7 +105,7 @@ export default function OHLCAnalysisLab() {
     } finally { setBusy(false); if (input.current) input.current.value = ""; }
   };
   return <section className="panel wide-panel ohlc-lab">
-    <div className="ohlc-lab-heading"><div><div className="eyebrow">LOCAL DATA WORKSPACE</div><h3>Analyze your own OHLC history</h3><p>Upload a price-history CSV to calculate indicators without connecting an unverified market feed.</p></div><button className="secondary-button" onClick={() => input.current?.click()} disabled={busy}><FileUp size={15}/>{busy ? "Reading…" : "Upload OHLC CSV"}</button><input ref={input} type="file" accept=".csv,text/csv" hidden onChange={event => upload(event.target.files?.[0])}/></div>
+    <div className="ohlc-lab-heading"><div><div className="eyebrow">LOCAL DATA WORKSPACE</div><h3>Analyze your own OHLC history</h3><p>Upload a price-history CSV to calculate indicators without connecting an unverified market feed.</p></div><button className="secondary-button" onClick={downloadTemplate}><Download size={15}/>CSV template</button><button className="secondary-button" onClick={() => input.current?.click()} disabled={busy}><FileUp size={15}/>{busy ? "Reading…" : "Upload OHLC CSV"}</button><input ref={input} type="file" accept=".csv,text/csv" hidden onChange={event => upload(event.target.files?.[0])}/></div>
     <div className="ohlc-format-note"><ShieldCheck size={15}/><span>Required headers: Date, Open, High, Low, Close. Optional: Volume. Data is processed in this browser and is not uploaded to CHITRANYA CAPITAL servers.</span></div>
     {error && <p className="form-error" role="alert">{error}</p>}
     {bars.length ? <>
