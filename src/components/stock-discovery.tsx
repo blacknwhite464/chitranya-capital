@@ -146,16 +146,17 @@ export default function StockDiscovery({ onAddSymbol, watchlistSymbols }: Props)
     </div>
     {rows.length ? <>
       <div className="offline-screener-meta"><span>{fileName} · {rows.length.toLocaleString()} securities{source ? " · " + source : ""}{asOf ? " · Effective " + asOf : ""}</span><span>{filtered.length.toLocaleString()} matches</span></div>
+      <div className="stock-directory-stats"><div><strong>{rows.length.toLocaleString()}</strong><span>Total securities</span></div><div><strong>{sectors.length - 1}</strong><span>Sector groups</span></div><div><strong>{rows.filter(row => row.listed).length.toLocaleString()}</strong><span>Marked listed</span></div></div>
       <div className="screener-search-row">
         <label className="glossary-search"><Search size={15}/><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search symbol, company, sector or ISIN"/></label>
         <select aria-label="Filter by sector" value={sector} onChange={event => setSector(event.target.value)}>{sectors.map(value => <option key={value}>{value}</option>)}</select>
         <button type="button" className="secondary-button" onClick={exportRows} disabled={!filtered.length}><Download size={14}/>Export results</button>
       </div>
       <div className="data-table security-directory">
-        <div className="table-row"><strong>Symbol</strong><strong>Company</strong><strong>Sector</strong><strong>ISIN</strong><strong>Watchlist</strong></div>
+        <div className="table-row"><strong>Symbol</strong><strong>Company</strong><strong>Sector</strong><strong>ISIN</strong><strong>Status</strong><strong>Watchlist</strong></div>
         {filtered.slice(0, 500).map(row => {
           const saved = watchlistSymbols.includes(row.symbol);
-          return <div className="table-row" key={row.symbol}><strong>{row.symbol}</strong><span>{row.name}</span><span>{row.sector}</span><span>{row.isin || "—"}</span><span>{saved ? <em>Saved</em> : <button type="button" className="icon-edit" aria-label={"Add " + row.symbol + " to watchlist"} onClick={() => onAddSymbol(row.symbol)}><Plus size={15}/></button>}</span></div>;
+          return <div className="table-row" key={row.symbol}><strong>{row.symbol}</strong><span>{row.name}</span><span>{row.sector}</span><span>{row.isin || "—"}</span><span>{row.listed ? "Listed" : "Unlisted"}</span><span>{saved ? <em>Saved</em> : <button type="button" className="icon-edit" aria-label={"Add " + row.symbol + " to watchlist"} onClick={() => onAddSymbol(row.symbol)}><Plus size={15}/></button>}</span></div>;
         })}
       </div>
       {filtered.length > 500 && <p className="privacy-note">Showing 500 of {filtered.length.toLocaleString()} matches. Export results to download the complete filtered directory.</p>}
