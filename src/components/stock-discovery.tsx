@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Building2, Download, FileUp, Plus, Search, ShieldCheck } from "lucide-react";
 
 type SecurityRow = { symbol: string; name: string; sector: string; isin: string; listed: boolean };
@@ -41,6 +41,34 @@ export default function StockDiscovery({ onAddSymbol, watchlistSymbols }: Props)
   const [asOf, setAsOf] = useState("");
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("cc-security-master-v1");
+      if (!raw) return;
+      const saved = JSON.parse(raw) as { rows?: SecurityRow[]; source?: string; asOf?: string; fileName?: string };
+      if (!Array.isArray(saved.rows) || saved.rows.some(row =>
+        !row || typeof row.symbol !== "string" || typeof row.name !== "string" ||
+        typeof row.sector !== "string" || typeof row.isin !== "string" ||
+        typeof row.listed !== "boolean"
+      )) throw new Error("Saved security directory has an invalid format.");
+      setRows(saved.rows.slice(0, 10000));
+      setSource(typeof saved.source === "string" ? saved.source : "");
+      setAsOf(typeof saved.asOf === "string" ? saved.asOf : "");
+      setFileName(typeof saved.fileName === "string" ? saved.fileName : "Saved browser directory");
+    } catch {
+      setMessage("A saved security directory could not be restored. Import the source CSV again.");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!rows.length) return;
+    try {
+      localStorage.setItem("cc-security-master-v1", JSON.stringify({ rows, source, asOf, fileName }));
+    } catch {
+      setMessage("Directory is available for this session, but browser storage is full. Export the CSV to keep a copy.");
+    }
+  }, [rows, source, asOf, fileName]);
 
   const sectors = useMemo(() => ["All sectors", ...Array.from(new Set(rows.map(row => row.sector).filter(Boolean))).sort()], [rows]);
   const filtered = useMemo(() => rows.filter(row =>
